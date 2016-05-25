@@ -15,7 +15,7 @@ namespace SBahnChaosApp
         {
             vehicles = new ObservableCollection<Vehicle>();
             var footerbutton = new Button { Text = "+ Add" };
-            footerbutton.Clicked += (s, o) =>
+            footerbutton.Clicked += (s, e) =>
             {
                 SubscribeView view = new SubscribeView();
                 view.CloseWithOK += (b, ve) => { vehicles.Add(ve); Navigation.PopModalAsync(true); };
