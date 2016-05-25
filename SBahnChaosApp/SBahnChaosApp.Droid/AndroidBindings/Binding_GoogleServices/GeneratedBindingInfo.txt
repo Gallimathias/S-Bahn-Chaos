@@ -1,0 +1,6 @@
+Binding for:
+com.google.gms:google-services:3.0.0
+
+Dependencies:
+
+google-services-3.0.0.jar,    Path=C:\Users\user\.gradle\caches\modules-2\files-2.1\com.google.gms\google-services\3.0.0\ee538ce9cf4148485e43017c5542202b8c78ff8e\google-services-3.0.0.jar

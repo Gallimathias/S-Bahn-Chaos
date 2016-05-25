@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "181042758685",
+    "firebase_url": "https://sbahnchaosapp.firebaseio.com",
+    "project_id": "sbahnchaosapp",
+    "storage_bucket": "sbahnchaosapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181042758685:android:a92cd76aad2e6bc8",
+        "android_client_info": {
+          "package_name": "de.sbahnchaosapp.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181042758685-ja513s3knea9tu1vd8ev28du3cd4v9m5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuLZp-VBJdgl4mwxhyiY8UkKBPZhdFn9Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
