@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/AblageSbahn/com.mdv.VVSMobil
+/AblageSbahn/google-services.json
+/AblageSbahn/Ablage
