@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace SBahnChaosApp
 {
-    public class Vehicle : INotifyPropertyChanged
+    public class Line : INotifyPropertyChanged
     {
         public string Name { get; set; }
 
@@ -65,13 +65,13 @@ namespace SBahnChaosApp
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Vehicle(string name, int delay)
+        public Line(string name, int delay)
         {
             Name = name;
             Delay = delay.ToString();
             Messages = new List<Message>();
         }
-        public Vehicle(string name, int delay, VehicleType type)
+        public Line(string name, int delay, VehicleType type)
         {
             Name = name;
             VehicleType = type;

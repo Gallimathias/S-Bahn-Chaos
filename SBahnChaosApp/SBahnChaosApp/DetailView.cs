@@ -10,19 +10,30 @@ namespace SBahnChaosApp
 {
     public class DetailView : ContentPage
     {
-        private Vehicle selectedItem;
+        private Line selectedItem;
         private ObservableCollection<Message> messages;
-        public DetailView(Vehicle selectedItem)
+
+        ListView listView;
+
+        public DetailView(Line selectedItem)
         {
             Title = selectedItem.Name;
             this.selectedItem = selectedItem;
-            
+
             messages = selectedItem.MessagesToOBSCollection();
             messages.OrderBy(m => m.DateTime);
 
-            var listView = new ListView { };
+            listView = new ListView();
+
+            setupListView();
+
             listView.ItemSelected += (s, e) => { ((ListView)s).SelectedItem = null; };
-            
+
+            Content = listView;
+        }
+
+        private void setupListView()
+        {
             listView.ItemsSource = messages;
             listView.HasUnevenRows = true;
             listView.ItemTemplate = new DataTemplate(() =>
@@ -44,8 +55,6 @@ namespace SBahnChaosApp
 
                 return cell;
             });
-
-            Content = listView;
         }
     }
 }

@@ -9,21 +9,43 @@ namespace SBahnChaosApp
 {
     public class SubscribeView : ContentPage
     {
-        public delegate void CloseWithOKEventHandler(object sender, Vehicle vehicle);
+        public delegate void CloseWithOKEventHandler(object sender, Line vehicle);
         public event CloseWithOKEventHandler CloseWithOK;
-        List<Vehicle> avaiblVehicles;
+        List<Line> avaiblVehicles;
         Picker picker;
+        Picker filter;
+        Image image;
+        Button confirmButton;
         public SubscribeView()
+        {
+
+
+            filter = new Picker();
+            image = new Image();
+            picker = new Picker();
+            confirmButton = new Button { Text = "Confirm", TextColor = Color.Lime };
+
+            FillPicker();
+            setupPage();
+            subscribe();
+
+
+            Content = new StackLayout
+            {
+                Children = {
+                    image, filter, picker, confirmButton
+                }
+            };
+        }
+
+        private void setupPage()
         {
             Title = "Add new Subscribing";
 
-            avaiblVehicles = new List<Vehicle>();
-            avaiblVehicles.Add(new Vehicle("60", 0, VehicleType.S));
-            avaiblVehicles.Add(new Vehicle("2", 0, VehicleType.U));
-            avaiblVehicles.Add(new Vehicle("3", 0, VehicleType.U));
-
-            Picker filter = new Picker();
-            Image image = new Image();
+            avaiblVehicles = new List<Line>();
+            avaiblVehicles.Add(new Line("60", 0, VehicleType.S));
+            avaiblVehicles.Add(new Line("2", 0, VehicleType.U));
+            avaiblVehicles.Add(new Line("3", 0, VehicleType.U));
 
             filter.Items.Add("All");
             filter.Items.Add("S-Bahn");
@@ -33,56 +55,48 @@ namespace SBahnChaosApp
             filter.SelectedIndex = 0;
 
             image.Source = $"ic_{filter.Items[filter.SelectedIndex][0].ToString().ToLower()}.png";
+        }
 
-            filter.SelectedIndexChanged += (s, o) => 
+        private void subscribe()
+        {
+            filter.SelectedIndexChanged += (s, o) =>
             {
                 char type = filter.Items[filter.SelectedIndex][0];
 
                 image.Source = $"ic_{type.ToString().ToLower()}.png";
 
                 if (filter.SelectedIndex > 0)
-                    fillPicker(getVehicleType(type));
+                    FillPicker(getVehicleType(type));
                 else
-                    fillPicker();
-                
+                    FillPicker();
+
             };
-            picker = new Picker();
 
-            fillPicker();
-
-            Button button = new Button { Text = "Confirm", TextColor = Color.Lime };
-            button.Clicked += (s, o) =>
+            confirmButton.Clicked += (s, o) =>
             {
                 char type = picker.Items[picker.SelectedIndex][0];
                 string name = picker.Items[picker.SelectedIndex].Substring(1);
 
-                Vehicle vehicle = avaiblVehicles.Find(v => v.VehicleType == getVehicleType(type) && v.Name == name);
+                Line vehicle = avaiblVehicles.Find(v => v.VehicleType == getVehicleType(type) && v.Name == name);
 
                 CloseWithOK?.Invoke(this, vehicle);
 
             };
-
-            Content = new StackLayout
-            {
-                Children = {
-                    image, filter, picker, button
-                }
-            };
         }
 
-        public void fillPicker()
+        public void FillPicker()
         {
             picker.Items.Clear();
 
-            foreach (Vehicle vehicle in avaiblVehicles)
+            foreach (Line vehicle in avaiblVehicles)
                 picker.Items.Add($"{vehicle.VehicleType.ToString().ToUpper()}{vehicle.Name}");
         }
-        public void fillPicker( VehicleType type)
+        public void FillPicker(VehicleType type)
         {
             picker.Items.Clear();
             var tmp = avaiblVehicles.FindAll(v => v.VehicleType == type);
 
-            foreach (Vehicle vehicle in tmp)
+            foreach (Line vehicle in tmp)
                 picker.Items.Add($"{vehicle.VehicleType.ToString().ToUpper()}{vehicle.Name}");
         }
 
@@ -91,7 +105,7 @@ namespace SBahnChaosApp
             switch (type)
             {
                 case 'S':
-                   return VehicleType.S;
+                    return VehicleType.S;
                 case 'U':
                     return VehicleType.U;
                 case 'B':

@@ -10,6 +10,7 @@ namespace SBahnChaosApp
     public class Message : INotifyPropertyChanged
     {
         public DateTime DateTime { get; set; }
+
         public Stop fromStop
         {
             get { return fromStop; }
@@ -21,6 +22,7 @@ namespace SBahnChaosApp
         }
         private string fromStopName;
         private string fromStopTime;
+
         public Stop toStop
         {
             get { return toStop; }
@@ -32,8 +34,9 @@ namespace SBahnChaosApp
         }
         private string toStopName;
         private string toStopTime;
+
         public string Text { get; set; }
-        public string Header { get { return $"von {fromStopName} {fromStopTime} \nnach {toStopName} {toStopTime}"; } }//return $"{fromStop.Name} {fromStop.DateTime.TimeOfDay} \n{toStop.Name} {toStop.DateTime.TimeOfDay}"
+        public string Header { get { return $"von {fromStopName} {fromStopTime} \nnach {toStopName} {toStopTime}"; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public Message(string text, DateTime dateTime)
@@ -41,8 +44,7 @@ namespace SBahnChaosApp
             DateTime = dateTime;
             Text = text;
         }
-
-
+        
     }
 
     public enum MessageType
