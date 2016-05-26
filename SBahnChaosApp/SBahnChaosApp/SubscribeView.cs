@@ -100,10 +100,19 @@ namespace SBahnChaosApp
 
         private List<string> getListofAvailableLines()
         {
-            var wr = WebRequest.Create("");
-            wr.Method = "POST";
+            var webRequest = WebRequest.Create("http://192.168.178.132:12344/lists/");
+            webRequest.Method = "POST";
+            byte[] buffer = Encoding.UTF8.GetBytes("get-all");
+            var stream = webRequest.GetRequestStream();
 
-            var a = wr.GetResponseAsync();
+            stream.Write(buffer, 0, buffer.Length);
+
+            var response = webRequest.GetResponse();
+          
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                var a = reader.ReadToEnd();
+            }
             
             return new List<string>();
         }
