@@ -28,7 +28,7 @@ namespace SBahnChaosApp.Droid
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            // startServiceInForeground();
+            startServiceInForeground();
 
             DoWork();
 
@@ -38,35 +38,23 @@ namespace SBahnChaosApp.Droid
 
         private void startServiceInForeground()
         {
-            var ongoing = new Notification(Resource.Drawable.icon, "Service in Foreground");
-            var pendingIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0);
+            Intent intent = new Intent(this, typeof(MainActivity));
 
-            ongoing.SetLatestEventInfo(this, "BackgroundService", "BackgroundService is running", pendingIntent);
+            PendingIntent pendingIntent = PendingIntent.GetActivity(this, 1, intent, 0);
+            
+            Notification.Builder builder = new Notification.Builder(this);
 
-            StartForeground((int)NotificationFlags.NoClear, ongoing);
-
-            /*
-             *  Intent intent = new Intent("com.rj.notitfications.SECACTIVITY");
-             *
-             *  PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 1, intent, 0);
-             *
-             *  Notification.Builder builder = new Notification.Builder(MainActivity.this);
-             *
-             *  builder.setAutoCancel(false);
-             *  builder.setTicker("this is ticker text");
-             *  builder.setContentTitle("WhatsApp Notification");               
-             *  builder.setContentText("You have a new message");
-             *  builder.setSmallIcon(R.drawable.ic_launcher);
-             *  builder.setContentIntent(pendingIntent);
-             *  builder.setOngoing(true);
-             *  builder.setSubText("This is subtext...");   //API level 16
-             *  builder.setNumber(100);
-             *  builder.build();
-             *
-             *  myNotication = builder.getNotification();
-             *  manager.notify(11, myNotication);
-             */
-
+            builder.SetAutoCancel(false);
+            builder.SetTicker("this is ticker text");
+            builder.SetContentTitle("WhatsApp Notification");
+            builder.SetContentText("You have a new message");
+            builder.SetSmallIcon(Resource.Drawable.icon);
+            builder.SetContentIntent(pendingIntent);
+            builder.SetOngoing(true);
+            builder.SetSubText("This is subtext...");   //API level 16
+            builder.SetNumber(100);
+            
+            StartForeground((int)NotificationFlags.ForegroundService, builder.Build());
         }
 
         public void DoWork()
@@ -89,12 +77,24 @@ namespace SBahnChaosApp.Droid
 
         void sendNotification(string message)
         {
-            var nMgmt = (NotificationManager)GetSystemService(NotificationService);
-            var notification = new Notification(Resource.Drawable.icon, "Hello World");
-            var pendingIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0);
-            notification.SetLatestEventInfo(this, "Notification", message, pendingIntent);
-            
-            nMgmt.Notify(0, notification);
+            var manager = (NotificationManager)GetSystemService(NotificationService);
+            Intent intent = new Intent(this, typeof(MainActivity));
+
+            PendingIntent pendingIntent = PendingIntent.GetActivity(this, 0, intent, 0);
+
+            Notification.Builder builder = new Notification.Builder(this);
+
+            builder.SetAutoCancel(true);
+            builder.SetTicker("this is ticker text");
+            builder.SetContentTitle("Message from Service");
+            builder.SetContentText(message);
+            builder.SetSmallIcon(Resource.Drawable.icon);
+            builder.SetContentIntent(pendingIntent);
+            builder.SetOngoing(false);
+            //builder.SetSubText("This is subtext...");   //API level 16
+            //builder.SetNumber(100);
+
+            manager.Notify((int)NotificationFlags.OnlyAlertOnce, builder.Build());
         }
 
         public override IBinder OnBind(Intent intent)

@@ -4,7 +4,7 @@ using Android.OS;
 
 namespace SBahnChaosApp.Droid
 {
-    internal class BackgroundServiceConnection : Java.Lang.Object, IServiceConnection
+    public class BackgroundServiceConnection : Java.Lang.Object, IServiceConnection
     {
         MainActivity activity;
         BackgroundServiceBinder binder;
