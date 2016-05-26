@@ -50,7 +50,7 @@ namespace SBahnChaosApp
         }
         public void FillPicker(VehicleType type)
         {
-            availableLines = getListofAvailableLines(type);
+            availableLines = getListofAvailableLines();
 
         }
 
@@ -61,7 +61,10 @@ namespace SBahnChaosApp
             filter.Items.Add("All");
             filter.Items.Add("S-Bahn");
             filter.Items.Add("U-Bahn");
+            filter.Items.Add("R-Bahn");
             filter.Items.Add("Bus");
+            filter.Items.Add("SEV-Bus");
+            filter.Items.Add("Zahnradbahn");
 
             filter.SelectedIndex = 0;
 
@@ -106,15 +109,24 @@ namespace SBahnChaosApp
             var stream = webRequest.GetRequestStream();
 
             stream.Write(buffer, 0, buffer.Length);
-
+            string[] stringArray;
             var response = webRequest.GetResponse();
-          
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            byte[] buff = new byte[64 * 1024];
+            using (BinaryReader reader = new BinaryReader(response.GetResponseStream()))
             {
-                var a = reader.ReadToEnd();
+                for (int i=0;i<response.ContentLength/2;i++)
+                {
+                    var tmp = reader.ReadUInt16();
+                    VehicleType type = (VehicleType)(tmp >> 13);
+                    ushort name = (ushort)(tmp & 0x1FFF);
+
+
+                }
+                reader.Read(buff,0,buff.Length);
+                stringArray = Encoding.UTF7.GetString(buff).Split('|');
             }
-            
-            return new List<string>();
+
+            return stringArray.ToList();
         }
         private List<string> getListofAvailableLines(VehicleType type)
         {
@@ -131,6 +143,12 @@ namespace SBahnChaosApp
                     return VehicleType.U;
                 case 'B':
                     return VehicleType.B;
+                case 'R':
+                    return VehicleType.R;
+                case 'V':
+                    return VehicleType.SEV;
+                case 'Z':
+                    return VehicleType.Z;
                 default:
                     return VehicleType.None;
             }

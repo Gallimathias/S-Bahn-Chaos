@@ -1,9 +1,11 @@
 ﻿
+using System.Linq;
+
 namespace TestServer
 {
     public class Line
     {
-        public string Name { get; set; }
+        public ushort Name { get; set; }
 
         public string CityCode { get; private set; }
         public VehicleType VehicleType
@@ -32,15 +34,9 @@ namespace TestServer
         }
         private int delay;
 
-
-        public Line(string name, int delay)
+        public Line(string name, int delay, VehicleType type=VehicleType.None)
         {
-            Name = name;
-            Delay = delay.ToString();
-        }
-        public Line(string name, int delay, VehicleType type)
-        {
-            Name = name;
+            Name = ushort.Parse(new string(name.Where(x=>char.IsNumber(x)).ToArray()));
             VehicleType = type;
             Delay = delay.ToString();
         }
@@ -51,11 +47,14 @@ namespace TestServer
         }
     }
 
-    public enum VehicleType
+    public enum VehicleType : byte
     {
         None,
         S,
         U,
-        B
+        B,
+        R,
+        SEV,
+        Z 
     }
 }

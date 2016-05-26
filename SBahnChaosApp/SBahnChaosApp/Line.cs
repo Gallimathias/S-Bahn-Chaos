@@ -83,6 +83,8 @@ namespace SBahnChaosApp
         {
             switch (vehicleType)
             {
+                case VehicleType.None:
+                    break;
                 case VehicleType.S:
                     Image = "ic_s.png";
                     break;
@@ -91,9 +93,16 @@ namespace SBahnChaosApp
                     break;
                 case VehicleType.B:
                     break;
+                case VehicleType.R:
+                    break;
+                case VehicleType.SEV:
+                    break;
+                case VehicleType.Z:
+                    break;
                 default:
                     break;
             }
+
         }
 
         public ObservableCollection<Message> MessagesToOBSCollection()
@@ -107,11 +116,14 @@ namespace SBahnChaosApp
         }
     }
 
-    public enum VehicleType
+    public enum VehicleType : byte
     {
         None,
         S,
         U,
-        B
+        B,
+        R,
+        SEV,
+        Z
     }
 }

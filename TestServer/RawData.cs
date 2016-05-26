@@ -27,5 +27,7 @@ namespace TestServer
         public int RealtimeAvailable { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public DateTimeOffset TimestampBefore { get; set; }
+
+        public override string ToString() => LineText;
     }
 }

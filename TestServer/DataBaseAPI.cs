@@ -35,19 +35,23 @@ namespace TestServer
             foreach (var item in Data)
             {
                 var array = item.LineText.Split(' ');
-                string line = array[1].Substring(2);
                 VehicleType type = stringToType(array[0]);
-                if (!Lines.Exists(l => l.Name == line && l.VehicleType == type ))
-                    Lines.Add(new Line(line, item.Delay, type));
+                var line = new Line(array[1], item.Delay, type);
+                if (!Lines.Exists(l => l.Name == line.Name && l.VehicleType == type))
+                    Lines.Add(line);
             }
 
         }
+
+
+        public static string lineTextToName(string label) => label.Where(x => char.IsNumber(x)).ToString();
+
 
         private static VehicleType charToType(char t)
         {
             switch (t)
             {
-                case('S'):
+                case ('S'):
                     return VehicleType.S;
                 case ('B'):
                     return VehicleType.B;
@@ -62,17 +66,23 @@ namespace TestServer
         {
             switch (line)
             {
-                case ("Bus"):
+                case "Bus":
                     return VehicleType.B;
-                case ("S-Bahn"):
+                case "S-Bahn":
                     return VehicleType.S;
-                case ("Stadtbahn"):
+                case "Stadtbahn":
                     return VehicleType.U;
-                case ("R-Bahn"):
-                    return VehicleType.None;
+                case "R-Bahn":
+                    return VehicleType.R;
+                case "SEV-Bus":
+                    return VehicleType.SEV;
+                case "Zahnradbahn":
+                    return VehicleType.Z;
                 default:
                     return VehicleType.None;
             }
         }
+
+
     }
 }

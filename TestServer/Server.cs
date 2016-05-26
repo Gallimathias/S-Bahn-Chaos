@@ -49,14 +49,27 @@ namespace TestServer
             {
                 a = reader.ReadToEnd();
             }
-            
+
             var response = context.Response;
 
             var query = request.Url.Query.TrimStart('?').Split('&');
-            var t = Encoding.UTF8.GetBytes("Hallo Client");
-            response.ContentLength64 = t.Length;
 
-            response.OutputStream.Write(t, 0, t.Length);
+            var stream = response.OutputStream;
+            response.SendChunked = false;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (BinaryWriter bw = new BinaryWriter(ms))
+                {
+                    foreach (var item in DataBaseAPI.Lines)
+                    {
+                        var buf = ((byte)item.VehicleType << 13) | item.Name;
+                        bw.Write(buf);
+                    }
+                    response.ContentLength64 = ms.Length;
+                    stream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                }
+            }
+
         }
     }
 }

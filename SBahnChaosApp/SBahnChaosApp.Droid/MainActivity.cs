@@ -24,7 +24,7 @@ namespace SBahnChaosApp.Droid
 
             //StartService(new Intent(nameof(BackgroundService)));
             StartService(new Intent("de.sbahnchaosapp.BackgroundService"));
-
+            
         }
     }
 }
