@@ -6,6 +6,7 @@ using Android.Widget;
 using System;
 using System.Threading;
 using Android.OS;
+using System.Net;
 
 namespace SBahnChaosApp.Droid
 {
@@ -63,7 +64,7 @@ namespace SBahnChaosApp.Droid
 
             var t = new Thread(() =>
             {
-
+                
                 while (true)
                 {
                     Thread.Sleep(10000);
