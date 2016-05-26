@@ -10,9 +10,7 @@ namespace SBahnChaosApp.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
         public bool isBound { get; set; }
-        bool isConfiChange = false;
         public BackgroundServiceBinder Binder { get; set; }
-        BackgroundServiceConnection serviceConnection;
 
 
         protected override void OnCreate(Bundle bundle)
@@ -27,38 +25,7 @@ namespace SBahnChaosApp.Droid
             //StartService(new Intent(nameof(BackgroundService)));
             StartService(new Intent("de.sbahnchaosapp.BackgroundService"));
 
-            //serviceConnection = LastNonConfigurationInstance as BackgroundServiceConnection;
-            
-
-            //if (serviceConnection != null)
-            //    Binder = serviceConnection.Binder;
         }
-
-        protected override void OnStart()
-        {
-            //var backgroundServiceIntent = new Intent("de.sbahnchaosapp.BackgroundService");
-            ////serviceConnection = new BackgroundServiceConnection(this);
-            //BindService(backgroundServiceIntent, serviceConnection, Bind.AutoCreate);
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            //if (!isConfiChange)
-            //    if (isBound)
-            //    {
-            //        UnbindService(serviceConnection);
-            //        isBound = false;
-            //    }
-        }
-
-        //public override Object OnRetainNonConfigurationInstance()
-        //{
-        //    base.OnRetainNonConfigurationInstance();
-        //    isConfiChange = true;
-        //    return serviceConnection;
-        //}
     }
 }
 
