@@ -16,18 +16,18 @@ namespace SBahnChaosApp
         Picker filter;
         Image image;
         Button confirmButton;
+
         public SubscribeView()
         {
-
-
             filter = new Picker();
             image = new Image();
             picker = new Picker();
+            avaiblVehicles = new List<Line>();
             confirmButton = new Button { Text = "Confirm", TextColor = Color.Lime };
-
-            FillPicker();
+            
             setupPage();
             subscribe();
+            FillPicker();
 
 
             Content = new StackLayout
@@ -42,7 +42,7 @@ namespace SBahnChaosApp
         {
             Title = "Add new Subscribing";
 
-            avaiblVehicles = new List<Line>();
+            
             avaiblVehicles.Add(new Line("60", 0, VehicleType.S));
             avaiblVehicles.Add(new Line("2", 0, VehicleType.U));
             avaiblVehicles.Add(new Line("3", 0, VehicleType.U));
