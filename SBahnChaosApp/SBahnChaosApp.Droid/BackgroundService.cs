@@ -29,7 +29,7 @@ namespace SBahnChaosApp.Droid
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            startServiceInForeground();
+            //startServiceInForeground();
 
             DoWork();
 
@@ -68,8 +68,8 @@ namespace SBahnChaosApp.Droid
                 while (true)
                 {
                     Thread.Sleep(10000);
-                    string a = DateTime.Now.ToString("HH:mm");
-                    sendNotification(a);
+                    //string a = DateTime.Now.ToString("HH:mm");
+                    //sendNotification(a);
                 }
             });
 
