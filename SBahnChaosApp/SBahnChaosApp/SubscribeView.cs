@@ -15,7 +15,7 @@ namespace SBahnChaosApp
         public delegate void CloseWithOKEventHandler(object sender, Line vehicle);
         public event CloseWithOKEventHandler CloseWithOK;
 
-        ObservableCollection<Line> availableLines;
+        EventedList<Line> availableLines;
         ExtendedPicker picker;
         ExtendedPicker filter;
         Image image;
@@ -26,11 +26,12 @@ namespace SBahnChaosApp
             image = new Image();
             picker = new ExtendedPicker();
             filter = new ExtendedPicker();
-            availableLines = getListofAvailableLines();
+            availableLines = new EventedList<Line>();
             confirmButton = new Button { Text = "Confirm", TextColor = Color.Lime };
 
             setupPage();
             subscribe();
+            getListofAvailableLines();
 
             Content = new StackLayout
             {
@@ -43,7 +44,7 @@ namespace SBahnChaosApp
         private void setupPage()
         {
             Title = "Add new Subscribing";
-            
+
             filter.Items.Add("All", VehicleType.None);
             filter.Items.Add("S-Bahn", VehicleType.SBahn);
             filter.Items.Add("U-Bahn", VehicleType.UBahn);
@@ -52,9 +53,9 @@ namespace SBahnChaosApp
             filter.Items.Add("SEV-Bus", VehicleType.SEVBus);
             filter.Items.Add("Zahnradbahn", VehicleType.Zahnradbahn);
 
-            filter.SelectedIndex = 1;
+            filter.SelectedIndex = 0;
             var a = filter.SelectedItem;
-            
+
             image.Source = $"ic_{a.Value.ToString().ToLower()}.png";
         }
 
@@ -65,13 +66,16 @@ namespace SBahnChaosApp
                 var type = filter.SelectedItem.Value;
 
                 image.Source = $"ic_{type.ToString().ToLower()}.png";
+                fillPicker((VehicleType)filter.SelectedItem.Value);
             };
 
-            //confirmButton.Clicked += (s, o) =>
-            //    CloseWithOK?.Invoke(this, ((Line)picker.SelectedItem));
+            availableLines.ItemAdded += (s, e) => { picker.Items.Add(e.ToString(), e); };
+
+            confirmButton.Clicked += (s, o) =>
+                CloseWithOK?.Invoke(this, (Line)picker.SelectedItem.Value);
         }
 
-        private ObservableCollection<Line> getListofAvailableLines()
+        private void getListofAvailableLines()
         {
             var webRequest = WebRequest.Create("http://192.168.178.132:12344/lists/");
             webRequest.Method = "POST";
@@ -81,7 +85,8 @@ namespace SBahnChaosApp
             stream.Write(buffer, 0, buffer.Length);
             var response = webRequest.GetResponse();
             byte[] buff = new byte[64 * 1024];
-            ObservableCollection<Line> lines = new ObservableCollection<Line>();//(response.ContentLength / sizeof(ushort));
+            //EventedList<Line> lines = new EventedList<Line>();//(response.ContentLength / sizeof(ushort));
+            availableLines.Clear();
             using (BinaryReader reader = new BinaryReader(response.GetResponseStream()))
             {
                 for (int i = 0; i < response.ContentLength / 2; i++)
@@ -89,37 +94,27 @@ namespace SBahnChaosApp
                     var tmp = reader.ReadUInt16();
                     VehicleType type = (VehicleType)(tmp >> 13);
                     ushort name = (ushort)(tmp & 0x1FFF);
-                    lines.Add(new Line(name, type));
+                    availableLines.Add(new Line(name, type));
                 }
                 reader.Read(buff, 0, buff.Length);
             }
 
-            return lines;
-        }
-        private ObservableCollection<Line> getListofAvailableLines(VehicleType type)
-        {
-            throw new NotImplementedException();
         }
 
-        private VehicleType getVehicleType(char type)
+        private void fillPicker(VehicleType type)
         {
-            switch (type)
-            {
-                case 'S':
-                    return VehicleType.SBahn;
-                case 'U':
-                    return VehicleType.UBahn;
-                case 'B':
-                    return VehicleType.Bus;
-                case 'R':
-                    return VehicleType.RBahn;
-                case 'V':
-                    return VehicleType.SEVBus;
-                case 'Z':
-                    return VehicleType.Zahnradbahn;
-                default:
-                    return VehicleType.None;
-            }
+            List<Line> tmp;
+            if (type != VehicleType.None)
+                tmp = availableLines.FindAll(l => l.VehicleType == type).OrderBy(l => l.Name).ToList();
+            else
+                tmp = availableLines.OrderBy(l => l.VehicleType).ToList();
+            
+
+            picker.Clear();
+
+            foreach (var item in tmp)
+                picker.Items.Add(item.ToString(), item);
         }
+
     }
 }

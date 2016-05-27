@@ -53,6 +53,14 @@ namespace Xamarin.Forms
             ItemRemoved?.Invoke(this, new PairItemEventArgs<TKey, TValue>(index, value));
         }
 
+        public void Clear()
+        {
+            if (Count == 0)
+                return;
+
+            mainDictionary.Clear();
+        }
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return new PairCollectionEnum<TKey, TValue>(this);

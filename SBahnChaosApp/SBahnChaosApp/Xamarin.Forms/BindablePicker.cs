@@ -6,7 +6,7 @@ namespace Xamarin.Forms
     public class BindablePicker : ObjectPicker
     {
 
-        public BindablePicker()
+        public BindablePicker() : base()
         {
             SelectedIndexChanged += OnSelectedIndexChanged;
         }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 
 namespace Xamarin.Forms
 {
@@ -19,6 +17,15 @@ namespace Xamarin.Forms
             base.SelectedIndexChanged += ExtendedPicker_SelectedIndexChanged;
         }
 
+        public void Clear()
+        {
+            if (Items.Count > 0)
+                Items.Clear();
+
+            if (base.Items.Count > 0)
+                base.Items?.Clear();
+        }
+
         private void ExtendedPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedItem = Items[base.SelectedIndex];
@@ -30,7 +37,6 @@ namespace Xamarin.Forms
 
             foreach (var item in Items)
                 base.Items.Add(item.Key);
-            
         }
     }
 }

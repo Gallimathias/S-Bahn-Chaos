@@ -9,12 +9,7 @@ namespace Xamarin.Forms
     {
         public object SelectedItem
         {
-            get
-            {
-                object item;
-                dictionaryOfItems.TryGetValue(base.SelectedIndex, out item);
-                return item;
-            }
+            get; set;
         }
 
         public new EventedList<object> Items
@@ -27,28 +22,25 @@ namespace Xamarin.Forms
             }
         }
 
-        private Dictionary<int, object> dictionaryOfItems;
-
-        public ObjectPicker()
+        public ObjectPicker() : base()
         {
-            dictionaryOfItems = new Dictionary<int, object>();
             Items = new EventedList<object>();
 
             Items.ItemAdded += (s, e) => setBaseList();
             Items.ItemRemoved += (s, e) => setBaseList();
+
+            base.SelectedIndexChanged += (s, e) =>
+            {
+                SelectedItem = Items[SelectedIndex];
+            };
         }
 
         private void setBaseList()
         {
             base.Items.Clear();
-            dictionaryOfItems.Clear();
 
             foreach (var item in Items)
-            {
                 base.Items.Add(item.ToString());
-                int key = base.Items.Count - 1;
-                dictionaryOfItems.Add(key, item);
-            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SBahnChaosApp
             private set
             {
                 vehicleType = value;
-                setImage();
+                Image = $"ic_{value.ToString().ToLower()}.png";
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(VehicleType)));
             }
         }
@@ -73,34 +73,7 @@ namespace SBahnChaosApp
             Delay = delay.ToString();
             Messages = new List<Message>();
         }
-
-
-        private void setImage()
-        {
-            switch (vehicleType)
-            {
-                case VehicleType.None:
-                    break;
-                case VehicleType.SBahn:
-                    Image = "ic_s.png";
-                    break;
-                case VehicleType.UBahn:
-                    Image = "ic_u.png";
-                    break;
-                case VehicleType.Bus:
-                    break;
-                case VehicleType.RBahn:
-                    break;
-                case VehicleType.SEVBus:
-                    break;
-                case VehicleType.Zahnradbahn:
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
+        
         public ObservableCollection<Message> MessagesToOBSCollection()
         {
             ObservableCollection<Message> tmp = new ObservableCollection<Message>();
