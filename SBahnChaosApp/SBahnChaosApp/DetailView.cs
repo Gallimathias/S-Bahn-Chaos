@@ -17,7 +17,7 @@ namespace SBahnChaosApp
 
         public DetailView(Line selectedItem)
         {
-            Title = selectedItem.Name;
+            Title = selectedItem.ToString();
             this.selectedItem = selectedItem;
 
             messages = selectedItem.MessagesToOBSCollection();

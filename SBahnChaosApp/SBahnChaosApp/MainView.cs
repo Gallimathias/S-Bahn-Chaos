@@ -25,7 +25,6 @@ namespace SBahnChaosApp
             setupMainView();
             initializedViews();
             subscribe();
-            generatedDemoData();
             
         }
 
@@ -110,50 +109,7 @@ namespace SBahnChaosApp
             listView.Refreshing += async (s, e) => { ((ListView)s).IsRefreshing = false; };
 
         }
-
-        private void generatedDemoData()
-        {
-            for (int i = 1; i <= 6; i++)
-            {
-                Random r = new Random(i);
-                int d = r.Next(0, 11);
-                var vl = new Line($"{i}", d, VehicleType.S);
-                Lines.Add(vl);
-            }
-
-            Message message = new Message("fährt erst ab S.-Hbf um 16:03", DateTime.Now);
-            message.fromStop = new Stop("S.-Schwabstr.", new DateTime(2016, 5, 24, 15, 57, 0));
-            message.toStop = new Stop("Böblingen", new DateTime(2016, 5, 24, 16, 56, 0));
-            Lines.First(sb => sb.Name == "6" && sb.VehicleType == VehicleType.S).Messages.Add(message);
-
-            message = new Message("fährt erst ab S.-Zuffenhausen um 16:27", DateTime.Now);
-            message.fromStop = new Stop("S.-Schwabstr.", new DateTime(2016, 5, 24, 16, 12, 0));
-            message.toStop = new Stop("Weil der Stadt", new DateTime(2016, 5, 24, 16, 57, 0));
-            Lines.First(sb => sb.Name == "6" && sb.VehicleType == VehicleType.S).Messages.Add(message);
-
-            message = new Message("Komplettausfall", DateTime.Now);
-            message.fromStop = new Stop("Backnang", new DateTime(2016, 5, 24, 15, 56, 0));
-            message.toStop = new Stop("S.-Vaihingen", new DateTime(2016, 5, 24, 16, 44, 0));
-            Lines.First(sb => sb.Name == "3" && sb.VehicleType == VehicleType.S).Messages.Add(message);
-
-            message = new Message("fährt erst ab Grunbach um 15:28", DateTime.Now);
-            message.fromStop = new Stop("Schorndorf", new DateTime(2016, 5, 24, 15, 18, 0));
-            message.toStop = new Stop("Filderstadt", new DateTime(2016, 5, 24, 16, 26, 0));
-            Lines.First(sb => sb.Name == "2" && sb.VehicleType == VehicleType.S).Messages.Add(message);
-
-            message = new Message("fährt erst ab S.-Rohr um 9:38", DateTime.Now);
-            message.fromStop = new Stop("Herrenberg", new DateTime(2016, 5, 24, 9, 16, 0));
-            message.toStop = new Stop("Kirchheim", new DateTime(2016, 5, 24, 10, 38, 0));
-            Lines.First(sb => sb.Name == "1" && sb.VehicleType == VehicleType.S).Messages.Add(message);
-
-            message = new Message("fährt erst ab S.-Feuerbach um 9:14", DateTime.Now);
-            message.fromStop = new Stop("S.-Schwabstr.", new DateTime(2016, 5, 24, 9, 2, 0));
-            message.toStop = new Stop("Backnang", new DateTime(2016, 5, 24, 9, 25, 0));
-            Lines.First(sb => sb.Name == "4" && sb.VehicleType == VehicleType.S).Messages.Add(message);
-
-            var u = new Line("1", 1, VehicleType.U);
-            Lines.Add(u);
-        }
+        
 
     }
 }

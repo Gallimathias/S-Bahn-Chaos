@@ -62,7 +62,7 @@ namespace TestServer
                 {
                     foreach (var item in DataBaseAPI.Lines)
                     {
-                        var buf = ((byte)item.VehicleType << 13) | item.Name;
+                        var buf = (ushort)(((byte)item.VehicleType << 13) | item.Name);
                         bw.Write(buf);
                     }
                     response.ContentLength64 = ms.Length;

@@ -11,7 +11,7 @@ namespace SBahnChaosApp
 {
     public class Line : INotifyPropertyChanged
     {
-        public string Name { get; set; }
+        public ushort Name { get; set; }
 
         public string CityCode { get; private set; }
         public VehicleType VehicleType
@@ -61,17 +61,12 @@ namespace SBahnChaosApp
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Image)));
             }
         }
+
         private FileImageSource image;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Line(string name, int delay)
-        {
-            Name = name;
-            Delay = delay.ToString();
-            Messages = new List<Message>();
-        }
-        public Line(string name, int delay, VehicleType type)
+        public Line(ushort name, VehicleType type = VehicleType.None)
         {
             Name = name;
             VehicleType = type;
@@ -79,25 +74,26 @@ namespace SBahnChaosApp
             Messages = new List<Message>();
         }
 
+
         private void setImage()
         {
             switch (vehicleType)
             {
                 case VehicleType.None:
                     break;
-                case VehicleType.S:
+                case VehicleType.SBahn:
                     Image = "ic_s.png";
                     break;
-                case VehicleType.U:
+                case VehicleType.UBahn:
                     Image = "ic_u.png";
                     break;
-                case VehicleType.B:
+                case VehicleType.Bus:
                     break;
-                case VehicleType.R:
+                case VehicleType.RBahn:
                     break;
-                case VehicleType.SEV:
+                case VehicleType.SEVBus:
                     break;
-                case VehicleType.Z:
+                case VehicleType.Zahnradbahn:
                     break;
                 default:
                     break;
@@ -114,16 +110,21 @@ namespace SBahnChaosApp
 
             return tmp;
         }
+
+        public override string ToString()
+        {
+            return $"{VehicleType.ToString()} {Name.ToString()}";
+        }
     }
 
     public enum VehicleType : byte
     {
         None,
-        S,
-        U,
-        B,
-        R,
-        SEV,
-        Z
+        SBahn,
+        UBahn,
+        Bus,
+        RBahn,
+        SEVBus,
+        Zahnradbahn
     }
 }

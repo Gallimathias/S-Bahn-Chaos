@@ -2141,7 +2141,7 @@ namespace SBahnChaosApp.Droid
 			public const int ic_play_light = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int ic_s = 2130837645;
+			public const int ic_sbahn = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
 			public const int ic_speaker_dark = 2130837646;
@@ -2162,7 +2162,7 @@ namespace SBahnChaosApp.Droid
 			public const int ic_tv_light = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int ic_u = 2130837652;
+			public const int ic_ubahn = 2130837652;
 			
 			// aapt resource value: 0x7f020095
 			public const int icon = 2130837653;

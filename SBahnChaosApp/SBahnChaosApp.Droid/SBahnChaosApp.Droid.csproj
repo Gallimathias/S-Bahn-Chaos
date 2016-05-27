@@ -153,22 +153,22 @@
     <AndroidResource Include="Resources\drawable\menu.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_s.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_sbahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_s.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_sbahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_s.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_sbahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_s.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_sbahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_s.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_sbahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_s.png" />
+    <AndroidResource Include="Resources\drawable\ic_sbahn.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_menu_white_48dp.png" />
@@ -189,22 +189,22 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_white_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_u.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_ubahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_u.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_ubahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_u.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_ubahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_u.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_ubahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_u.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_ubahn.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_u.png" />
+    <AndroidResource Include="Resources\drawable\ic_ubahn.png" />
   </ItemGroup>
   <Import Project="..\SBahnChaosApp\SBahnChaosApp.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

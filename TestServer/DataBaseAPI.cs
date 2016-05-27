@@ -34,11 +34,18 @@ namespace TestServer
         {
             foreach (var item in Data)
             {
-                var array = item.LineText.Split(' ');
-                VehicleType type = stringToType(array[0]);
-                var line = new Line(array[1], item.Delay, type);
-                if (!Lines.Exists(l => l.Name == line.Name && l.VehicleType == type))
-                    Lines.Add(line);
+                try
+                {
+                    var array = item.LineText.Split(' ');
+                    VehicleType type = stringToType(array[0]);
+                    var line = new Line(array[1], item.Delay, type);
+                    if (!Lines.Exists(l => l.Name == line.Name && l.VehicleType == type))
+                        Lines.Add(line);
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
             }
 
         }

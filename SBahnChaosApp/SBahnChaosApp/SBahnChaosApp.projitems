@@ -18,5 +18,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Station.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stop.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SubscribeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\BindablePicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\EventedCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\ObjectPicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\PairCollectionEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\PairItemEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\PairCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\ExtendedPicker.cs" />
   </ItemGroup>
 </Project>

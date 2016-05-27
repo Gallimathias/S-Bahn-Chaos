@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,24 +15,22 @@ namespace SBahnChaosApp
         public delegate void CloseWithOKEventHandler(object sender, Line vehicle);
         public event CloseWithOKEventHandler CloseWithOK;
 
-        List<string> availableLines;
-        Picker picker;
-        Picker filter;
+        ObservableCollection<Line> availableLines;
+        ExtendedPicker picker;
+        ExtendedPicker filter;
         Image image;
         Button confirmButton;
 
         public SubscribeView()
         {
-            filter = new Picker();
             image = new Image();
-            picker = new Picker();
+            picker = new ExtendedPicker();
+            filter = new ExtendedPicker();
             availableLines = getListofAvailableLines();
             confirmButton = new Button { Text = "Confirm", TextColor = Color.Lime };
 
             setupPage();
             subscribe();
-            FillPicker();
-
 
             Content = new StackLayout
             {
@@ -41,67 +40,38 @@ namespace SBahnChaosApp
             };
         }
 
-        public void FillPicker()
-        {
-            picker.Items.Clear();
-
-            foreach (var vehicle in availableLines)
-                picker.Items.Add(vehicle);
-        }
-        public void FillPicker(VehicleType type)
-        {
-            availableLines = getListofAvailableLines();
-
-        }
-
         private void setupPage()
         {
             Title = "Add new Subscribing";
+            
+            filter.Items.Add("All", VehicleType.None);
+            filter.Items.Add("S-Bahn", VehicleType.SBahn);
+            filter.Items.Add("U-Bahn", VehicleType.UBahn);
+            filter.Items.Add("R-Bahn", VehicleType.RBahn);
+            filter.Items.Add("Bus", VehicleType.Bus);
+            filter.Items.Add("SEV-Bus", VehicleType.SEVBus);
+            filter.Items.Add("Zahnradbahn", VehicleType.Zahnradbahn);
 
-            filter.Items.Add("All");
-            filter.Items.Add("S-Bahn");
-            filter.Items.Add("U-Bahn");
-            filter.Items.Add("R-Bahn");
-            filter.Items.Add("Bus");
-            filter.Items.Add("SEV-Bus");
-            filter.Items.Add("Zahnradbahn");
-
-            filter.SelectedIndex = 0;
-
-            image.Source = $"ic_{filter.Items[filter.SelectedIndex][0].ToString().ToLower()}.png";
+            filter.SelectedIndex = 1;
+            var a = filter.SelectedItem;
+            
+            image.Source = $"ic_{a.Value.ToString().ToLower()}.png";
         }
 
         private void subscribe()
         {
             filter.SelectedIndexChanged += (s, o) =>
             {
-                char type = filter.Items[filter.SelectedIndex][0];
+                var type = filter.SelectedItem.Value;
 
                 image.Source = $"ic_{type.ToString().ToLower()}.png";
-
-                if (filter.SelectedIndex > 0)
-                    FillPicker(getVehicleType(type));
-                else
-                    FillPicker();
-
             };
 
-            confirmButton.Clicked += (s, o) =>
-            {
-                char type = picker.Items[picker.SelectedIndex][0];
-                string name = picker.Items[picker.SelectedIndex].Substring(1);
-
-                CloseWithOK?.Invoke(this, getNewVehicle(type, name));
-
-            };
+            //confirmButton.Clicked += (s, o) =>
+            //    CloseWithOK?.Invoke(this, ((Line)picker.SelectedItem));
         }
 
-        private Line getNewVehicle(char type, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<string> getListofAvailableLines()
+        private ObservableCollection<Line> getListofAvailableLines()
         {
             var webRequest = WebRequest.Create("http://192.168.178.132:12344/lists/");
             webRequest.Method = "POST";
@@ -109,26 +79,24 @@ namespace SBahnChaosApp
             var stream = webRequest.GetRequestStream();
 
             stream.Write(buffer, 0, buffer.Length);
-            string[] stringArray;
             var response = webRequest.GetResponse();
             byte[] buff = new byte[64 * 1024];
+            ObservableCollection<Line> lines = new ObservableCollection<Line>();//(response.ContentLength / sizeof(ushort));
             using (BinaryReader reader = new BinaryReader(response.GetResponseStream()))
             {
-                for (int i=0;i<response.ContentLength/2;i++)
+                for (int i = 0; i < response.ContentLength / 2; i++)
                 {
                     var tmp = reader.ReadUInt16();
                     VehicleType type = (VehicleType)(tmp >> 13);
                     ushort name = (ushort)(tmp & 0x1FFF);
-
-
+                    lines.Add(new Line(name, type));
                 }
-                reader.Read(buff,0,buff.Length);
-                stringArray = Encoding.UTF7.GetString(buff).Split('|');
+                reader.Read(buff, 0, buff.Length);
             }
 
-            return stringArray.ToList();
+            return lines;
         }
-        private List<string> getListofAvailableLines(VehicleType type)
+        private ObservableCollection<Line> getListofAvailableLines(VehicleType type)
         {
             throw new NotImplementedException();
         }
@@ -138,17 +106,17 @@ namespace SBahnChaosApp
             switch (type)
             {
                 case 'S':
-                    return VehicleType.S;
+                    return VehicleType.SBahn;
                 case 'U':
-                    return VehicleType.U;
+                    return VehicleType.UBahn;
                 case 'B':
-                    return VehicleType.B;
+                    return VehicleType.Bus;
                 case 'R':
-                    return VehicleType.R;
+                    return VehicleType.RBahn;
                 case 'V':
-                    return VehicleType.SEV;
+                    return VehicleType.SEVBus;
                 case 'Z':
-                    return VehicleType.Z;
+                    return VehicleType.Zahnradbahn;
                 default:
                     return VehicleType.None;
             }
