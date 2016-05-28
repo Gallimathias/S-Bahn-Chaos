@@ -62,6 +62,8 @@ namespace SBahnChaosApp.Core
             }
         }
 
+        public string ID { get { return $"{VehicleType.ToString()}_{Name}"; } }
+
         private FileImageSource image;
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -14,14 +14,14 @@ namespace SBahnChaosApp.FileManager
     {
         public string Name { get { return baseFile.Name; } }
         public string Path { get { return baseFile.Path; } }
-        public List<string> IDOfLines { get; private set; }
+        public List<string> FileOfLines { get; private set; }
 
         private IFile baseFile;
 
         public ConfigFile(IFile iFile)
         {
             baseFile = iFile;
-            IDOfLines = new List<string>();
+            FileOfLines = new List<string>();
             GetConfig();
         }
 
@@ -29,7 +29,7 @@ namespace SBahnChaosApp.FileManager
         {
             string configString;
 
-            using (StreamReader reader = new StreamReader(OpenAsync(PCLStorage.FileAccess.Read).Result))
+            using (StreamReader reader = new StreamReader(baseFile.OpenAsync(PCLStorage.FileAccess.Read).Result))
                 configString = reader.ReadToEnd();
 
             int pos1 = configString.IndexOf("<channels>") + ("<channels>").Length;
@@ -41,28 +41,22 @@ namespace SBahnChaosApp.FileManager
             foreach (var item in tmp)
             {
                 if (item != "")
-                    IDOfLines.Add(item);
+                    FileOfLines.Add(item);
             }
-            
-                
-                
-
         }
 
-        public void InsertLine(Line line)
+        public void InsertLine(ChannelFile channelFile)
         {
-            var type = (byte)line.VehicleType;
-            var Name = line.Name;
-            string entry = $"\n{type.ToString()},{Name.ToString()}";
+            string entry = $"\n{channelFile.Name}";
 
             string configString;
-            using (StreamReader reader = new StreamReader(OpenAsync(PCLStorage.FileAccess.Read).Result))
+            using (StreamReader reader = new StreamReader(baseFile.OpenAsync(PCLStorage.FileAccess.Read).Result))
                 configString = reader.ReadToEnd();
 
             int pos2 = configString.IndexOf("</channels>") - 1;
             configString = configString.Insert(pos2, entry);
 
-            using (StreamWriter writer = new StreamWriter(OpenAsync(PCLStorage.FileAccess.ReadAndWrite).Result))
+            using (StreamWriter writer = new StreamWriter(baseFile.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).Result))
                 writer.Write(configString);
         }
 
@@ -84,25 +78,5 @@ namespace SBahnChaosApp.FileManager
 
             return new ConfigFile(file);
         }
-
-        public Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return baseFile.DeleteAsync(cancellationToken);
-        }
-
-        public Task MoveAsync(string newPath, NameCollisionOption collisionOption = NameCollisionOption.ReplaceExisting, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return baseFile.MoveAsync(newPath, collisionOption, cancellationToken);
-        }
-
-        public Task<Stream> OpenAsync(PCLStorage.FileAccess fileAccess, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return baseFile.OpenAsync(fileAccess, cancellationToken);
-        }
-
-        public Task RenameAsync(string newName, NameCollisionOption collisionOption = NameCollisionOption.FailIfExists, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return baseFile.RenameAsync(newName, collisionOption, cancellationToken);
-        }
-    }
+ }
 }

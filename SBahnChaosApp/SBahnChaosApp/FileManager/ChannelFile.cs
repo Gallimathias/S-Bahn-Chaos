@@ -3,47 +3,77 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using SBahnChaosApp.Core;
 
 namespace SBahnChaosApp.FileManager
 {
-    internal class ChannelFile : IFile
+    public class ChannelFile
     {
-        public string Name
+        public string Name { get { return baseFile.Name; } }
+        public string Path { get { return baseFile.Path; } }
+
+        public bool IsLoaded { get; private set; }
+
+        public Line Line
         {
             get
             {
-                throw new NotImplementedException();
+                if (line == null)
+                    Load();
+
+                return line;
+
             }
         }
 
-        public string Path
+        private Line line;
+
+        private IFile baseFile;
+
+        public ChannelFile(IFile file)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            baseFile = file;
         }
 
-        public Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public static ChannelFile Create(Line line, IFolder folder)
         {
-            throw new NotImplementedException();
+            IFile file;
+            file = folder.CreateFileAsync($"{line.ID}.line", CreationCollisionOption.ReplaceExisting).Result;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<Line>");
+            sb.AppendLine($"<Name>{line.Name}</Name>");
+            sb.AppendLine($"<Type>{(byte)line.VehicleType}</Type>");
+            sb.AppendLine("</Line>");
+
+            using (StreamWriter writer = new StreamWriter(file.OpenAsync(PCLStorage.FileAccess.ReadAndWrite).Result))
+                writer.Write(sb.ToString());
+
+            return new ChannelFile(file);
         }
 
-        public Task MoveAsync(string newPath, NameCollisionOption collisionOption = NameCollisionOption.ReplaceExisting, CancellationToken cancellationToken = default(CancellationToken))
+        public void Load()
         {
-            throw new NotImplementedException();
+            string rawData;
+            using (StreamReader reader = new StreamReader(baseFile.OpenAsync(PCLStorage.FileAccess.Read).Result))
+                rawData = reader.ReadToEnd();
+
+            var a = rawData.Split();
+
+            var name = helpSubstring(a.First(s => s.StartsWith("<Name>")));
+            var type = helpSubstring(a.First(s => s.StartsWith("<Type>")));
+
+            line = new Line(ushort.Parse(name), (VehicleType)byte.Parse(type));
         }
 
-        public Task<Stream> OpenAsync(PCLStorage.FileAccess fileAccess, CancellationToken cancellationToken = default(CancellationToken))
+        private string helpSubstring(string data)
         {
-            throw new NotImplementedException();
-        }
+            int pos1 = data.IndexOf(">") + 1;
+            int length = data.IndexOf("</") - pos1;
 
-        public Task RenameAsync(string newName, NameCollisionOption collisionOption = NameCollisionOption.FailIfExists, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            throw new NotImplementedException();
+            return data.Substring(pos1, length);
         }
     }
 }

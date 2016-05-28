@@ -13,7 +13,9 @@ namespace SBahnChaosApp.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
         public bool isBound { get; set; }
+
         public BackgroundServiceBinder Binder { get; set; }
+        public BackgroundService Service { get; set; }
         private BackgroundServiceConnection connection;
         private Intent intent;
 
@@ -26,7 +28,6 @@ namespace SBahnChaosApp.Droid
             MainFileManager.Initialize();
             LoadApplication(new App());
             intent = new Intent("de.sbahnchaosapp.BackgroundService");
-
         }
 
         protected override void OnStart()
@@ -40,8 +41,7 @@ namespace SBahnChaosApp.Droid
             {
                 connection = new BackgroundServiceConnection(this);
                 BindService(intent, connection, Bind.AutoCreate);
-                isBound = true;
-                Toast.MakeText(this, "the Service bound", ToastLength.Long).Show();
+                Toast.MakeText(this, "The Service is bound", ToastLength.Long).Show();
             }
             else
             {
@@ -56,7 +56,6 @@ namespace SBahnChaosApp.Droid
             if (isBound)
             {
                 UnbindService(connection);
-                isBound = false;
             }
         }
     }

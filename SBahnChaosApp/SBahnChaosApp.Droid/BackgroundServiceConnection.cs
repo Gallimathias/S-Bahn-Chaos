@@ -1,10 +1,10 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
+using Java.Lang;
 
 namespace SBahnChaosApp.Droid
 {
-    public class BackgroundServiceConnection : Java.Lang.Object, IServiceConnection
+    public class BackgroundServiceConnection : Object, IServiceConnection
     {
         MainActivity activity;
         BackgroundServiceBinder binder;
@@ -23,8 +23,9 @@ namespace SBahnChaosApp.Droid
             if (backgroundBinder != null)
             {
                 activity.Binder = backgroundBinder;
+                activity.Service = backgroundBinder.GetService();
                 activity.isBound = true;
-                this.binder = backgroundBinder;
+                binder = backgroundBinder;
             }
         }
 

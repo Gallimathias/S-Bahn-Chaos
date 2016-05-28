@@ -35,7 +35,7 @@ namespace SBahnChaosApp.Droid
             if (IsRunning)
                 return StartCommandResult.Sticky;
 
-            startServiceInForeground();
+            //startServiceInForeground();
 
             DoWork();
 
@@ -112,5 +112,6 @@ namespace SBahnChaosApp.Droid
             binder = new BackgroundServiceBinder(this);
             return binder;
         }
+        
     }
 }

@@ -16,7 +16,7 @@ namespace SBahnChaosApp.FileManager
         public static IFolder RootFolder { get { return MainFileSystem.LocalStorage; } }
         public static ConfigFile ConfigFile { get; private set; }
         public static IFolder ChannelFolder { get; private set; }
-        public static IList<IFile> channelFiles { get; private set; }
+        public static List<ChannelFile> channelFiles { get; private set; }
 
         public static bool IsInitialized { get; private set; }
 
@@ -38,12 +38,9 @@ namespace SBahnChaosApp.FileManager
 
             ObservableCollection<Line> tmp = new ObservableCollection<Line>();
 
-            if (ConfigFile != null)
-                foreach (var item in ConfigFile.IDOfLines)
-                {
-                    var str = item.Split(',');
-                    tmp.Add(new Line(ushort.Parse(str[1]), (VehicleType)byte.Parse(str[0])));
-                }
+            if (channelFiles != null)
+                foreach (var item in channelFiles)
+                    tmp.Add(item.Line);
 
             return tmp;
         }
@@ -66,13 +63,18 @@ namespace SBahnChaosApp.FileManager
 
         public static void LoadChannels()
         {
+            channelFiles = new List<ChannelFile>();
             ChannelFolder = RootFolder.CreateFolderAsync("channels", CreationCollisionOption.OpenIfExists).Result;
-            channelFiles = ChannelFolder.GetFilesAsync().Result;
+
+            foreach (var item in ConfigFile.FileOfLines)
+                channelFiles.Add(new ChannelFile(ChannelFolder.GetFileAsync(item).Result));
         }
 
-        internal static void AddLineToConfi(Line ve)
+        internal static void SaveLine(Line ve)
         {
-            ConfigFile?.InsertLine(ve);
+            var channel = ChannelFile.Create(ve, ChannelFolder);
+            ConfigFile.InsertLine(channel);
+            channelFiles.Add(channel);
         }
     }
 }

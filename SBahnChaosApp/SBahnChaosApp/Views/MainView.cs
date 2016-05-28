@@ -105,7 +105,7 @@ namespace SBahnChaosApp.Views
                 SubscribeView view = new SubscribeView();
                 view.CloseWithOK += (b, ve) => {
                     Lines.Add(ve);
-                    MainFileManager.AddLineToConfi(ve);
+                    MainFileManager.SaveLine(ve);
                     Navigation.PopModalAsync(true); };
                 NavigationPage page = new NavigationPage(view);
                 Navigation.PushModalAsync(page);
