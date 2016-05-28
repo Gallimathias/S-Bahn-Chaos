@@ -1,19 +1,18 @@
-﻿using SBahnChaosApp.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Xamarin.Forms;
 
-namespace SBahnChaosApp
+namespace StorageSample
 {
     public class App : Application
     {
         public App()
         {
             // The root page of your application
-            MainPage = new NavigationPage(new MainView());
-           
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()

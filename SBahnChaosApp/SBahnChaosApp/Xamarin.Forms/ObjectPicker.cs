@@ -21,7 +21,7 @@ namespace Xamarin.Forms
                 setBaseList();
             }
         }
-
+        
         public ObjectPicker() : base()
         {
             Items = new EventedList<object>();
