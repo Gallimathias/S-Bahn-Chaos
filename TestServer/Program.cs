@@ -38,7 +38,13 @@ namespace TestServer
                         DataBaseAPI.RawToLine();
                     }
                     Console.WriteLine("Complete");
-                    Thread.Sleep(30000);
+
+                    foreach (var item in DataBaseAPI.Lines.FindAll(l => l.Delay > 0))
+                    {
+                        Console.WriteLine($"{item.ToString()} +{item.Delay.ToString()}");
+                    }
+
+                    Thread.Sleep(5000);
                 }
             });
             background.IsBackground = true;

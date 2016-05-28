@@ -38,9 +38,42 @@ namespace TestServer
                 {
                     var array = item.LineText.Split(' ');
                     VehicleType type = stringToType(array[0]);
-                    var line = new Line(array[1], item.Delay, type);
+                    var line = new Line(array[1], type);
                     if (!Lines.Exists(l => l.Name == line.Name && l.VehicleType == type))
+                    {
                         Lines.Add(line);
+                    }
+                    else
+                    {
+                        var lines = Lines.First(l => l.Name == line.Name && l.VehicleType == type);
+                        var vehicle = new Vehicle();
+
+                        vehicle.CurrentStop = item.CurrentStop;
+                        vehicle.Delay = item.Delay;
+                        vehicle.DirectionText = item.DirectionText;
+                        vehicle.ID = item.ID;
+                        vehicle.IsAtStop = item.IsAtStop;
+                        vehicle.JourneyIdentifier = item.JourneyIdentifier;
+                        vehicle.Latitude = item.Latitude;
+                        vehicle.LatitudeBefore = item.LatitudeBefore;
+                        vehicle.Longitude = item.Longitude;
+                        vehicle.LongitudeBefore = item.LongitudeBefore;
+                        vehicle.NextStop = item.NextStop;
+                        vehicle.Timestamp = item.Timestamp;
+                        vehicle.TimestampBefore = item.TimestampBefore;
+
+                        if (lines.Vehicles.ContainsKey(vehicle.ID))
+                        {
+                            Lines.First(l => l.Name == line.Name && l.VehicleType == type).Vehicles.Remove(vehicle.ID);
+                            Lines.First(l => l.Name == line.Name && l.VehicleType == type).Vehicles.Add(vehicle.ID, vehicle);
+                        }
+                        else
+                        {
+                            Lines.First(l => l.Name == line.Name && l.VehicleType == type).Vehicles.Add(vehicle.ID, vehicle);
+                        }
+                        
+
+                    }
                 }
                 catch (Exception)
                 {

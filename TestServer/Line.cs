@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TestServer
@@ -18,27 +19,27 @@ namespace TestServer
         }
         private VehicleType vehicleType;
 
-        public string Delay
-        {
-            get
-            {
-                if (delay == 0)
-                    return "";
+        public int Delay { get { return averageDelay(); } }
 
-                return $"+{delay}";
-            }
-            set
-            {
-                delay = int.Parse(value);
-            }
-        }
-        private int delay;
-
-        public Line(string name, int delay, VehicleType type=VehicleType.None)
+        public Line(string name, VehicleType type = VehicleType.None)
         {
-            Name = ushort.Parse(new string(name.Where(x=>char.IsNumber(x)).ToArray()));
+            Name = ushort.Parse(new string(name.Where(x => char.IsNumber(x)).ToArray()));
             VehicleType = type;
-            Delay = delay.ToString();
+            Vehicles = new Dictionary<string, Vehicle>();
+        }
+
+        public Dictionary<string, Vehicle> Vehicles { get; set; }
+
+        private int averageDelay()
+        {
+            int sum = 0;
+            foreach (var item in Vehicles)
+                sum += item.Value.Delay;
+
+            if (Vehicles.Count > 0)
+                return sum / Vehicles.Count;
+            else
+                return 0;
         }
 
         public override string ToString()
@@ -46,6 +47,8 @@ namespace TestServer
             return $"{VehicleType.ToString()} {Name}";
         }
     }
+
+
 
     public enum VehicleType : byte
     {
@@ -55,6 +58,6 @@ namespace TestServer
         B,
         R,
         SEV,
-        Z 
+        Z
     }
 }
