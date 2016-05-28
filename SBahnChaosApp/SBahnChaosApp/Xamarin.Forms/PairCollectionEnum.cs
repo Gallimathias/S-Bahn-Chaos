@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Xamarin.Forms
 {
-    public class PairCollectionEnum <TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>
+    public class PairCollectionEnum<TKey, TValue> : IEnumerator<KeyValuePair<TKey, TValue>>
     {
         public KeyValuePair<TKey, TValue> Current { get { return Collection[position]; } }
 
@@ -17,14 +17,8 @@ namespace Xamarin.Forms
             position = -1;
             Collection = collection;
         }
-        
-        object IEnumerator.Current
-        {
-            get
-            {
-                return Current;
-            }
-        }
+
+        object IEnumerator.Current { get { return Current; } }
 
         public bool MoveNext()
         {
@@ -32,15 +26,9 @@ namespace Xamarin.Forms
             return (position < Collection.Count);
         }
 
-        public void Reset()
-        {
-            position = -1;
-        }
+        public void Reset() => position = -1;
 
-        private IEnumerator getEnumerator()
-        {
-            return this;
-        }
+        private IEnumerator getEnumerator() => this;
 
         #region IDisposable Support
         private bool disposedValue = false;

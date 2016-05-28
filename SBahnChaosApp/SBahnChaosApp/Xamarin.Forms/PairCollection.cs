@@ -61,15 +61,10 @@ namespace Xamarin.Forms
             mainDictionary.Clear();
         }
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            return new PairCollectionEnum<TKey, TValue>(this);
-        }
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() =>
+            new PairCollectionEnum<TKey, TValue>(this);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
 

@@ -1,4 +1,5 @@
 ﻿using SBahnChaosApp.Core;
+using SBahnChaosApp.FileManager;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,15 +21,24 @@ namespace SBahnChaosApp.Views
             Lines = new ObservableCollection<Line>();
             footerButton = new Button { Text = "+ Add" };
             listView = new ListView();
-            
-            Title = "SBahn Chaos App";
 
+            MainFileManager.Initialize();
+
+            setList();
+
+            Title = "SBahn Chaos App";
+            
             setupMainView();
             initializedViews();
             subscribe();
             
         }
 
+        private void setList()
+        {
+            Lines = MainFileManager.GetSubscribedChannels();
+        }
+        
         private void setupMainView()
         {
             this.Detail = new ContentPage
@@ -93,7 +103,10 @@ namespace SBahnChaosApp.Views
             footerButton.Clicked += (s, e) =>
             {
                 SubscribeView view = new SubscribeView();
-                view.CloseWithOK += (b, ve) => { Lines.Add(ve); Navigation.PopModalAsync(true); };
+                view.CloseWithOK += (b, ve) => {
+                    Lines.Add(ve);
+                    MainFileManager.AddLineToConfi(ve);
+                    Navigation.PopModalAsync(true); };
                 NavigationPage page = new NavigationPage(view);
                 Navigation.PushModalAsync(page);
             };

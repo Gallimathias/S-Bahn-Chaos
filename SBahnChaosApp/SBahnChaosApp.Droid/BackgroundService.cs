@@ -15,21 +15,27 @@ namespace SBahnChaosApp.Droid
     public class BackgroundService : Service
     {
         BackgroundServiceBinder binder;
+        public bool IsRunning { get; private set; }
 
         public override void OnCreate()
         {
             base.OnCreate();
+            IsRunning = false;
         }
 
         public override void OnDestroy()
         {
+            
             base.OnDestroy();
         }
 
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            //startServiceInForeground();
+            if (IsRunning)
+                return StartCommandResult.Sticky;
+
+            startServiceInForeground();
 
             DoWork();
 
@@ -70,6 +76,9 @@ namespace SBahnChaosApp.Droid
                     Thread.Sleep(10000);
                     //string a = DateTime.Now.ToString("HH:mm");
                     //sendNotification(a);
+                    var manager = (ActivityManager)GetSystemService(ActivityService);
+                    var list = manager.GetRunningServices(int.MaxValue);
+                   
                 }
             });
 

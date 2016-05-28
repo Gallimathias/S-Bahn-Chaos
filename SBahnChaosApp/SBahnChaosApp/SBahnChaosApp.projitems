@@ -14,6 +14,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\Message.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Station.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Stop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileManager\ChannelFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileManager\ConfigFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileManager\MainFileManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DetailView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\MainView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SettingsView.cs" />
@@ -25,8 +28,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\PairItemEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\PairCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Xamarin.Forms\ExtendedPicker.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)FileManager\" />
   </ItemGroup>
 </Project>
