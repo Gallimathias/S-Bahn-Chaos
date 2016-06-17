@@ -45,13 +45,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Telegram\Audio.cs" />
+    <Compile Include="Telegram\Chat.cs" />
+    <Compile Include="Telegram\Contact.cs" />
+    <Compile Include="Telegram\Document.cs" />
+    <Compile Include="Telegram\Location.cs" />
+    <Compile Include="Telegram\Message.cs" />
+    <Compile Include="Telegram\MessageEntity.cs" />
+    <Compile Include="Telegram\PhotoSize.cs" />
+    <Compile Include="Telegram\Sticker.cs" />
+    <Compile Include="Telegram\User.cs" />
+    <Compile Include="Telegram\Venue.cs" />
+    <Compile Include="Telegram\Video.cs" />
+    <Compile Include="Telegram\Voice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Telegram\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
