@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBahnChaosApp.Droid", "SBahnChaosApp\SBahnChaosApp.Droid\SBahnChaosApp.Droid.csproj", "{CF44D54A-4B1E-439B-93D8-C54BF51974B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SBahnChaosApp.Droid", "SBahnChaosApp.Droid\SBahnChaosApp.Droid.csproj", "{CF44D54A-4B1E-439B-93D8-C54BF51974B8}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SBahnChaosApp", "SBahnChaosApp\SBahnChaosApp\SBahnChaosApp.shproj", "{8EA5435B-1FB9-4C8A-B2C7-ABDFE22F7ED6}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SBahnChaosApp", "SBahnChaosApp\SBahnChaosApp.shproj", "{8EA5435B-1FB9-4C8A-B2C7-ABDFE22F7ED6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SBahnChaosApp\SBahnChaosApp\SBahnChaosApp.projitems*{8ea5435b-1fb9-4c8a-b2c7-abdfe22f7ed6}*SharedItemsImports = 13
-		SBahnChaosApp\SBahnChaosApp\SBahnChaosApp.projitems*{cf44d54a-4b1e-439b-93d8-c54bf51974b8}*SharedItemsImports = 4
+		SBahnChaosApp\SBahnChaosApp.projitems*{8ea5435b-1fb9-4c8a-b2c7-abdfe22f7ed6}*SharedItemsImports = 13
+		SBahnChaosApp\SBahnChaosApp.projitems*{cf44d54a-4b1e-439b-93d8-c54bf51974b8}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
