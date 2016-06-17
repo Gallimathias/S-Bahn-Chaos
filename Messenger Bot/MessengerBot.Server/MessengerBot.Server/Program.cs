@@ -20,16 +20,19 @@ namespace MessengerBot.Server
                 uri = reader.ReadLine();
             }
 
-            var request = WebRequest.Create(new Uri($"{uri}/getMe"));
+            
+            var request = WebRequest.Create(new Uri($"{uri}/getUpdates"));
+            request.Timeout = 60000;
             var response = request.GetResponse();
+            
 
             using (StreamReader reader = new StreamReader(response.GetResponseStream()))
             {
-                var message = reader.ReadToEnd();
+                var message = reader.ReadToEndAsync().Result;
             }
-
 
             Console.ReadLine();
         }
+        
     }
 }
