@@ -1,4 +1,5 @@
 ﻿using MessengerBot.Core.Telegram;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,20 +22,60 @@ namespace MessengerBot.Server
                 uri = reader.ReadLine();
             }
 
-            
+
             var request = WebRequest.Create(new Uri($"{uri}/getUpdates"));
             request.Timeout = 60000;
             var response = request.GetResponse();
-            
 
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            Update[] update;
+
+            var a = read(response.GetResponseStream());
+            update = JsonConvert.DeserializeObject<Rootobject>(a).result;
+
+            foreach (var item in update)
             {
-                var message = reader.ReadToEndAsync().Result;
+                var message = item.message;
+                if (message.text.Contains("/get"))
+                {
+                    var u = new Uri($"{uri}/sendMessage");
+                    transfer m = new transfer();
+                    m.chat_id = message.chat.id;
+                    m.text = "Hallo du da";
+                    var text = JsonConvert.SerializeObject(m); //$"chat_id={message.chat.id}&text=Hallo du da draußen"; //
+                    request = WebRequest.Create(u);
+                    
+                    
+                    request.ContentType = "application/json";
+                    request.Method = "POST";
+                    write(request.GetRequestStream(), text);
+                    text = read(request.GetResponse().GetResponseStream());
+                }
             }
 
             Console.ReadLine();
-            
+
         }
-        
+
+        static string read(Stream stream)
+        {
+            using (StreamReader reader = new StreamReader(stream))
+                return reader.ReadToEndAsync().Result;
+        }
+
+        static void write(Stream stream, string text)
+        {
+            using (StreamWriter writer = new StreamWriter(stream))
+            {
+                writer.Write(text);
+                writer.Flush();
+            }
+        }
+
+        class transfer
+        {
+            public int chat_id { get; set; }
+            public string text { get; set; }
+        }
+
     }
 }
