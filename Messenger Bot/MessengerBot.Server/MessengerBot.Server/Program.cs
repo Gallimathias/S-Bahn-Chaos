@@ -16,6 +16,8 @@ namespace MessengerBot.Server
 
         static void Main(string[] args)
         {
+            ComandManager.Inizialize();
+
             string uri;
             using (StreamReader reader = new StreamReader(File.OpenRead(@".\privateConfig.keys")))
             {
@@ -35,21 +37,25 @@ namespace MessengerBot.Server
             foreach (var item in update)
             {
                 var message = item.message;
-                if (message.text.Contains("/get"))
-                {
-                    var u = new Uri($"{uri}/sendMessage");
-                    transfer m = new transfer();
-                    m.chat_id = message.chat.id;
-                    m.text = "Hallo du da";
-                    var text = JsonConvert.SerializeObject(m); //$"chat_id={message.chat.id}&text=Hallo du da draußen"; //
-                    request = WebRequest.Create(u);
-                    
-                    
-                    request.ContentType = "application/json";
-                    request.Method = "POST";
-                    write(request.GetRequestStream(), text);
-                    text = read(request.GetResponse().GetResponseStream());
-                }
+                //if (message.text.Contains("/get"))
+                //{
+                //    var u = new Uri($"{uri}/sendMessage");
+                //    transfer m = new transfer();
+                //    m.chat_id = message.chat.id;
+                //    m.text = "Hallo du da";
+                //    var text = JsonConvert.SerializeObject(m);
+                //    request = WebRequest.Create(u);
+
+
+                //    request.ContentType = "application/json";
+                //    request.Method = "POST";
+                //    write(request.GetRequestStream(), text);
+                //    text = read(request.GetResponse().GetResponseStream());
+                //}
+
+                var pos = message.text.Split();
+
+                ComandManager.ThrowCommand(pos.First(s => s.StartsWith("/")), new CommandArg(pos, item));
             }
 
             Console.ReadLine();
