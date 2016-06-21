@@ -22,7 +22,7 @@ namespace MessengerBot.Core
                 Func<TArguments, TResult> temp;
 
                 delegates.TryGetValue(key, out temp);
-                
+
                 return temp;
             }
             set
@@ -44,12 +44,14 @@ namespace MessengerBot.Core
             }
         }
 
-        public void Throw(string key, TArguments args)
+        public TResult Throw(string key, TArguments args)
         {
             Func<TArguments, TResult> temp;
 
             delegates.TryGetValue(key, out temp);
-            temp(args);
+            return temp(args);
         }
+
+        public List<string> GetListOfCommands() => delegates.Keys.ToList();
     }
 }
