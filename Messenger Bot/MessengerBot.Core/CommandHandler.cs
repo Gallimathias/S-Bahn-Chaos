@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MessengerBot.Core
 {
-    public class ComandHandler<TArguments, TResult>
+    public class CommandHandler<TArguments, TResult>
     {
         private Dictionary<string, Func<TArguments, TResult>> delegates { get; set; }
 
-        public ComandHandler()
+        public CommandHandler()
         {
             delegates = new Dictionary<string, Func<TArguments, TResult>>();
         }
@@ -49,6 +49,10 @@ namespace MessengerBot.Core
             Func<TArguments, TResult> temp;
 
             delegates.TryGetValue(key, out temp);
+
+            if (temp == null)
+                return default(TResult);
+
             return temp(args);
         }
 
