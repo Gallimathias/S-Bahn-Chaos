@@ -53,6 +53,7 @@
     <Compile Include="Telegram\ChosenInlineResult.cs" />
     <Compile Include="Telegram\Contact.cs" />
     <Compile Include="Telegram\Document.cs" />
+    <Compile Include="Telegram\File.cs" />
     <Compile Include="Telegram\InlineQuery.cs" />
     <Compile Include="Telegram\Location.cs" />
     <Compile Include="Telegram\Message.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Telegram\Sticker.cs" />
     <Compile Include="Telegram\Update.cs" />
     <Compile Include="Telegram\User.cs" />
+    <Compile Include="Telegram\UserProfilePhotos.cs" />
     <Compile Include="Telegram\Venue.cs" />
     <Compile Include="Telegram\Video.cs" />
     <Compile Include="Telegram\Voice.cs" />
