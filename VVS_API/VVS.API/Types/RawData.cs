@@ -27,7 +27,29 @@ namespace VVS.API.Types
         public int RealtimeAvailable { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public DateTimeOffset TimestampBefore { get; set; }
+        
+        public Vehicle ToVehicle()
+        {
+            var vehicle = new Vehicle();
+
+            vehicle.CurrentStop         = CurrentStop;
+            vehicle.Delay               = Delay;
+            vehicle.DirectionText       = DirectionText;
+            vehicle.ID                  = ID;
+            vehicle.IsAtStop            = IsAtStop;
+            vehicle.JourneyIdentifier   = JourneyIdentifier;
+            vehicle.Latitude            = Latitude;
+            vehicle.LatitudeBefore      = LatitudeBefore;
+            vehicle.Longitude           = Longitude;
+            vehicle.LongitudeBefore     = LongitudeBefore;
+            vehicle.NextStop            = NextStop;
+            vehicle.Timestamp           = Timestamp;
+            vehicle.TimestampBefore     = TimestampBefore;
+
+            return vehicle;
+        }
 
         public override string ToString() => LineText;
+        
     }
 }
