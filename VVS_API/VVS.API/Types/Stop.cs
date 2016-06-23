@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VVS.API
+namespace VVS.API.Types
 {
     public class Stop : Station
     {

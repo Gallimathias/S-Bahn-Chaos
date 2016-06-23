@@ -7,10 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using VVS.API.Types;
 
 namespace VVS.API
 {
-    static class DataBaseAPI
+    static class APIConnection
     {
         private static readonly Random Random = new Random();
         public static List<RawData> Data { get; set; }

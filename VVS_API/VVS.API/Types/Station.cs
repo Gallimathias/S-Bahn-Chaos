@@ -1,4 +1,4 @@
-﻿namespace VVS.API
+﻿namespace VVS.API.Types
 {
     public class Station
     {

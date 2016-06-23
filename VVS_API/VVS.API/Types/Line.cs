@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VVS.API
+namespace VVS.API.Types
 {
     public class Line
     {

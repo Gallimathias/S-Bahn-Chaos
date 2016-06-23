@@ -17,29 +17,29 @@ namespace VVS.API
         {
             
             server = new Server();
-            DataBaseAPI.Data = new List<RawData>();
-            DataBaseAPI.Lines = new List<Line>();
+            APIConnection.Data = new List<RawData>();
+            APIConnection.Lines = new List<Line>();
             
             background = new Thread(() => {
                 while (true)
                 {
                     Console.Write("Get Data.....");
-                    var t = DataBaseAPI.ReadData();
+                    var t = APIConnection.ReadData();
                     t.Wait();
                     
-                    lock (DataBaseAPI.Data)
+                    lock (APIConnection.Data)
                     {
-                        DataBaseAPI.Data = t.Result;
+                        APIConnection.Data = t.Result;
                     }
                     Console.WriteLine("Finish");
                     Console.Write("Convert.....");
-                    lock (DataBaseAPI.Lines)
+                    lock (APIConnection.Lines)
                     {
-                        DataBaseAPI.RawToLine();
+                        APIConnection.RawToLine();
                     }
                     Console.WriteLine("Complete");
 
-                    foreach (var item in DataBaseAPI.Lines.FindAll(l => l.Delay > 0))
+                    foreach (var item in APIConnection.Lines.FindAll(l => l.Delay > 0))
                     {
                         Console.WriteLine($"{item.ToString()} +{item.Delay.ToString()}");
                     }

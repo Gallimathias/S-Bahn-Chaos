@@ -60,7 +60,7 @@ namespace VVS.API
             {
                 using (BinaryWriter bw = new BinaryWriter(ms))
                 {
-                    foreach (var item in DataBaseAPI.Lines)
+                    foreach (var item in APIConnection.Lines)
                     {
                         var buf = (ushort)(((byte)item.VehicleType << 13) | item.Name);
                         bw.Write(buf);
