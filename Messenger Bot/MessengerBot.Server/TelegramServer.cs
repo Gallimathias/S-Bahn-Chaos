@@ -26,6 +26,7 @@ namespace MessengerBot.Server
         public static void Start()
         {
             TelegramApi.StartReceiving();
+            DatabaseManager.Connect();
         }
 
         public static void Stop()
@@ -41,7 +42,7 @@ namespace MessengerBot.Server
         private static void TelegramApi_MessageReceived(object sender, MessageEventArgs e)
         {
             var Message = e.Message;
-
+            
             var elements = Message.Text.Split();
 
             CommandManager.ThrowCommand(elements.First(t => t.StartsWith("/")), new CommandArg(elements, e));
