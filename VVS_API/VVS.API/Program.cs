@@ -13,7 +13,10 @@ namespace VVS.API
     {
         static void Main(string[] args)
         {
-
+            APIConnection.BeginReciveData();
+            while (true) {
+                
+            };
         }
     }
 }

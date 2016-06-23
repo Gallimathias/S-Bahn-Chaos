@@ -6,7 +6,7 @@ namespace VVS.API.Types
 {
     public class Line
     {
-        public ushort Name { get; set; }
+        public string Name { get; set; }
 
         public string CityCode { get; private set; }
         public VehicleType VehicleType
@@ -23,7 +23,8 @@ namespace VVS.API.Types
 
         public Line(string name, VehicleType type = VehicleType.None)
         {
-            Name = ushort.Parse(new string(name.Where(x => char.IsNumber(x)).ToArray()));
+            //Name = ushort.Parse(new string(name.Where(x => char.IsNumber(x)).ToArray()));
+            Name = name;
             VehicleType = type;
             Vehicles = new Dictionary<string, Vehicle>();
         }
@@ -47,17 +48,5 @@ namespace VVS.API.Types
             return $"{VehicleType.ToString()} {Name}";
         }
     }
-
-
-
-    public enum VehicleType : byte
-    {
-        None,
-        S,
-        U,
-        B,
-        R,
-        SEV,
-        Z
-    }
+   
 }
