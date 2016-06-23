@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SBahnChaosApp.Core
+namespace VVS.API
 {
     public class Stop : Station
     {

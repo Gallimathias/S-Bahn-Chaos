@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TestServer
+namespace VVS.API
 {
     public class Line
     {
