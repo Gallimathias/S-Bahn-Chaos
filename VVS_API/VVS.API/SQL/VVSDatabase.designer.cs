@@ -314,7 +314,7 @@ namespace VVS.API.SQL
 		
 		private string _citycode;
 		
-		private bool _vehicle_type;
+		private System.Data.Linq.Binary _vehicle_type;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
@@ -326,7 +326,7 @@ namespace VVS.API.SQL
     partial void OnnameChanged();
     partial void OncitycodeChanging(string value);
     partial void OncitycodeChanged();
-    partial void Onvehicle_typeChanging(bool value);
+    partial void Onvehicle_typeChanging(System.Data.Linq.Binary value);
     partial void Onvehicle_typeChanged();
     #endregion
 		
@@ -395,8 +395,8 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Bit NOT NULL", IsPrimaryKey=true)]
-		public bool vehicle_type
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Binary(1) NOT NULL", CanBeNull=false, IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary vehicle_type
 		{
 			get
 			{
@@ -436,7 +436,7 @@ namespace VVS.API.SQL
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Lines")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicles")]
 	public partial class Vehicles : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -444,9 +444,11 @@ namespace VVS.API.SQL
 		
 		private int _Id;
 		
-		private int _db_id;
+		private string _db_id;
 		
 		private int _line;
+		
+		private System.Data.Linq.Binary _vehicle_type;
 		
 		private string _current_stop;
 		
@@ -458,15 +460,15 @@ namespace VVS.API.SQL
 		
 		private string _journey;
 		
-		private System.Nullable<double> _latitude;
+		private string _latitude;
 		
-		private System.Nullable<double> _longitude;
+		private string _longitude;
 		
 		private string _next_stop;
 		
-		private int _timestamp;
+		private System.DateTimeOffset _timestamp;
 		
-		private int _timestamp_before;
+		private System.DateTimeOffset _timestamp_before;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
@@ -474,10 +476,12 @@ namespace VVS.API.SQL
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void Ondb_idChanging(int value);
+    partial void Ondb_idChanging(string value);
     partial void Ondb_idChanged();
     partial void OnlineChanging(int value);
     partial void OnlineChanged();
+    partial void Onvehicle_typeChanging(System.Data.Linq.Binary value);
+    partial void Onvehicle_typeChanged();
     partial void Oncurrent_stopChanging(string value);
     partial void Oncurrent_stopChanged();
     partial void OndelayChanging(System.Nullable<int> value);
@@ -488,15 +492,15 @@ namespace VVS.API.SQL
     partial void OnisAtStopChanged();
     partial void OnjourneyChanging(string value);
     partial void OnjourneyChanged();
-    partial void OnlatitudeChanging(System.Nullable<double> value);
+    partial void OnlatitudeChanging(string value);
     partial void OnlatitudeChanged();
-    partial void OnlongitudeChanging(System.Nullable<double> value);
+    partial void OnlongitudeChanging(string value);
     partial void OnlongitudeChanged();
     partial void Onnext_stopChanging(string value);
     partial void Onnext_stopChanged();
-    partial void OntimestampChanging(int value);
+    partial void OntimestampChanging(System.DateTimeOffset value);
     partial void OntimestampChanged();
-    partial void Ontimestamp_beforeChanging(int value);
+    partial void Ontimestamp_beforeChanging(System.DateTimeOffset value);
     partial void Ontimestamp_beforeChanged();
     #endregion
 		
@@ -525,8 +529,8 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_db_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int db_id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_db_id", DbType="NChar(30) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string db_id
 		{
 			get
 			{
@@ -561,6 +565,26 @@ namespace VVS.API.SQL
 					this._line = value;
 					this.SendPropertyChanged("line");
 					this.OnlineChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Binary(1) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary vehicle_type
+		{
+			get
+			{
+				return this._vehicle_type;
+			}
+			set
+			{
+				if ((this._vehicle_type != value))
+				{
+					this.Onvehicle_typeChanging(value);
+					this.SendPropertyChanging();
+					this._vehicle_type = value;
+					this.SendPropertyChanged("vehicle_type");
+					this.Onvehicle_typeChanged();
 				}
 			}
 		}
@@ -665,8 +689,8 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_latitude", DbType="Float")]
-		public System.Nullable<double> latitude
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_latitude", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string latitude
 		{
 			get
 			{
@@ -685,8 +709,8 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_longitude", DbType="Float")]
-		public System.Nullable<double> longitude
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_longitude", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string longitude
 		{
 			get
 			{
@@ -725,8 +749,8 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp", DbType="Int NOT NULL")]
-		public int timestamp
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp", DbType="DateTimeOffset NOT NULL")]
+		public System.DateTimeOffset timestamp
 		{
 			get
 			{
@@ -745,8 +769,8 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp_before", DbType="Int NOT NULL")]
-		public int timestamp_before
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp_before", DbType="DateTimeOffset NOT NULL")]
+		public System.DateTimeOffset timestamp_before
 		{
 			get
 			{

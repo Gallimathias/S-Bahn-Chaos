@@ -76,6 +76,7 @@ namespace VVS.API
                 {
                     Data = ReadLocData().Result;
                     RawToLine();
+                    Console.WriteLine("Finish");
                     Thread.Sleep(30000);
                 }
             },

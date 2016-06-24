@@ -13,8 +13,17 @@ namespace VVS.API
     {
         static void Main(string[] args)
         {
+            DatabaseManager.Connect();
             APIConnection.BeginReciveData();
+            
             while (true) {
+                Console.ReadLine();
+                var l = APIConnection.Lines.ToList();
+                DatabaseManager.InsertLines(l);
+                DatabaseManager.Submit();
+                Console.WriteLine("Finish Database Insert");
+                APIConnection.Lines = DatabaseManager.GetIds(l);
+                Console.WriteLine("Get all Id's");
                 
             };
         }

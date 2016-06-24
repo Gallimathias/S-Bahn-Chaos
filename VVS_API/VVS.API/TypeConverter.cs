@@ -56,7 +56,7 @@ namespace VVS.API
         public static Vehicle ToVehicle(RawData data)
         {
             var vehicle = new Vehicle();
-
+            
             vehicle.CurrentStop         = data.CurrentStop;
             vehicle.Delay               = data.Delay;
             vehicle.DirectionText       = data.DirectionText;

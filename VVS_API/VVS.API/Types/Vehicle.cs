@@ -4,6 +4,7 @@ namespace VVS.API.Types
 {
     public class Vehicle
     {
+        public int Line_id { get; set; }
         public string CurrentStop { get; set; }
         public int Delay { get; set; }
         public string DirectionText { get; set; }
@@ -17,6 +18,8 @@ namespace VVS.API.Types
         public string NextStop { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public DateTimeOffset TimestampBefore { get; set; }
-        
+        public VehicleType Type { get; set; }
+
+
     }
 }

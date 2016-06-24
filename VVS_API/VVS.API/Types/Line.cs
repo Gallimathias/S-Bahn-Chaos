@@ -7,8 +7,7 @@ namespace VVS.API.Types
 {
     public class Line
     {
-        public string Name { get; set; }
-
+        public string Name { get; private set; }
         public string CityCode { get; private set; }
         public VehicleType VehicleType
         {
@@ -18,9 +17,21 @@ namespace VVS.API.Types
                 vehicleType = value;
             }
         }
-        private VehicleType vehicleType;
 
+
+        public int Id
+        {
+            get { return id; }
+            set
+            {
+                id = value;
+                SetLine();
+            }
+        }
         public int Delay { get { return averageDelay(); } }
+
+        private VehicleType vehicleType;
+        private int id;
 
         public Line(string name, VehicleType type = VehicleType.None)
         {
@@ -28,10 +39,28 @@ namespace VVS.API.Types
             Name = name;
             VehicleType = type;
             Vehicles = new Dictionary<string, Vehicle>();
-            
+
         }
 
+        public List<Vehicle> GetVehicles()
+        {
+            var list = new List<Vehicle>();
+
+            foreach (var vehicle in Vehicles)
+                list.Add(vehicle.Value);
+
+            return list;
+        }
         public Dictionary<string, Vehicle> Vehicles { get; set; }
+
+        public void SetLine()
+        {
+            foreach (var item in Vehicles)
+            {
+                item.Value.Line_id = id;
+                item.Value.Type = vehicleType;
+            }
+        }
 
         private int averageDelay()
         {
@@ -50,5 +79,5 @@ namespace VVS.API.Types
             return $"{VehicleType.ToString()} {Name}";
         }
     }
-   
+
 }
