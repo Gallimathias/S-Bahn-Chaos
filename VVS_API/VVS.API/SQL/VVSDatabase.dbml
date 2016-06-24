@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="VVSBase" Class="EntrysDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=KRUEGERM-NB\NAV90SQL;Initial Catalog=VVSBase;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="VVS.API.Properties.Settings" SettingsPropertyName="VVSBaseConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.History" Member="History">
+    <Type Name="History">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="line" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="vehicle" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="delay" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="direction" Type="System.String" DbType="Text" CanBeNull="true" />
+      <Column Name="nextstop" Type="System.String" DbType="Text" CanBeNull="true" />
+      <Column Name="timestampt" Type="System.Data.Linq.Binary" DbType="rowversion NOT NULL" CanBeNull="false" IsVersion="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lines" Member="Lines">
+    <Type Name="Lines">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="citycode" Type="System.String" DbType="NChar(5)" CanBeNull="true" />
+      <Column Name="vehicle_type" Type="System.Boolean" DbType="Bit NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lines" Member="Vehicles">
+    <Type Name="Vehicles">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="db_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="line" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="current_stop" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="delay" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="direction" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="isAtStop" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="journey" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="latitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="longitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="next_stop" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="timestamp" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="timestamp_before" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
+using VVS.API.SQL;
 
 namespace VVS.API.Types
 {
@@ -27,6 +28,7 @@ namespace VVS.API.Types
             Name = name;
             VehicleType = type;
             Vehicles = new Dictionary<string, Vehicle>();
+            
         }
 
         public Dictionary<string, Vehicle> Vehicles { get; set; }
