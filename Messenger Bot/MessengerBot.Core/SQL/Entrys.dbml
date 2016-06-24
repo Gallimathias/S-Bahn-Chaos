@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TestBase" Class="UserEntryDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=KRUEGERM-NB\NAV90SQL;Initial Catalog=TestBase;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="MessengerBot.Core.Properties.Settings" SettingsPropertyName="TestBaseConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=KRUEGERM-NB\NAV90SQL;Initial Catalog=TestBase;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="Server.Properties.Settings" SettingsPropertyName="TestBaseConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.[User]" Member="User">
     <Type Name="User">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

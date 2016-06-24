@@ -61,13 +61,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SQL\UserEntry.cs">
-      <DependentUpon>UserEntry.dbml</DependentUpon>
+    <Compile Include="SQL\Entrys.cs">
+      <DependentUpon>Entrys.dbml</DependentUpon>
     </Compile>
-    <Compile Include="SQL\UserEntry.designer.cs">
+    <Compile Include="SQL\Entrys.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>UserEntry.dbml</DependentUpon>
+      <DependentUpon>Entrys.dbml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -77,9 +77,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="SQL\UserEntry.dbml">
+    <None Include="SQL\Entrys.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>UserEntry.designer.cs</LastGenOutput>
+      <LastGenOutput>Entrys.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -87,8 +87,8 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SQL\UserEntry.dbml.layout">
-      <DependentUpon>UserEntry.dbml</DependentUpon>
+    <None Include="SQL\Entrys.dbml.layout">
+      <DependentUpon>Entrys.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,6 @@
 //     der Code erneut generiert wird.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 namespace MessengerBot.Core.SQL
 {
 	using System.Data.Linq;
@@ -19,6 +18,7 @@ namespace MessengerBot.Core.SQL
 	using System.Linq;
 	using System.Linq.Expressions;
 	using System.ComponentModel;
+    
 	using System;
 	
 	
@@ -36,9 +36,10 @@ namespace MessengerBot.Core.SQL
     #endregion
 		
 		public UserEntryDataContext() : 
-				base(global::MessengerBot.Core.Properties.Settings.Default.TestBaseConnectionString, mappingSource)
+				base(Properties.Settings.Default.TestBaseConnectionString, mappingSource)
 		{
-			OnCreated();
+
+            OnCreated();
 		}
 		
 		public UserEntryDataContext(string connection) : 
