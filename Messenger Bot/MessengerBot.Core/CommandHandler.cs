@@ -33,7 +33,7 @@ namespace MessengerBot.Core
                     delegates.TryGetValue(key, out temp);
                     delegates.Remove(key);
 
-                    temp += value;
+                    temp = value;
 
                     delegates.Add(key, temp);
                 }

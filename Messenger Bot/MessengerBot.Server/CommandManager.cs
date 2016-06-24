@@ -16,9 +16,9 @@ namespace MessengerBot.Server
         public static void Inizialize()
         {
             CommandHandler = new CommandHandler<CommandArg, dynamic>();
-            CommandHandler["/help"] = args => getCommands(args);
-            CommandHandler["/sendMe"] = args => sendMe(args);
-            CommandHandler["/insert"] = args => insertMe(args);
+            CommandHandler["/help"]     += args => getCommands(args);
+            CommandHandler["/sendMe"]   += args => sendMe(args);
+            CommandHandler["/insert"]   += args => insertMe(args);
         }
 
         private static dynamic insertMe(CommandArg args)
