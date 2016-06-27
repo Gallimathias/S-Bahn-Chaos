@@ -102,86 +102,65 @@ namespace VVS.API.SQL
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _Id;
-		
-		private int _line;
-		
 		private int _vehicle;
 		
-		private int _delay;
+		private System.DateTimeOffset _timestamp;
+		
+		private System.DateTimeOffset _timestamp_before;
+		
+		private System.Nullable<bool> _isAtStop;
+		
+		private System.Nullable<int> _delay;
+		
+		private string _current_stop;
 		
 		private string _direction;
 		
-		private string _nextstop;
+		private string _journey;
 		
-		private System.Data.Linq.Binary _timestampt;
+		private string _latitude;
+		
+		private string _longitude;
+		
+		private string _next_stop;
+		
+		private EntityRef<Vehicles> _Vehicles;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnlineChanging(int value);
-    partial void OnlineChanged();
     partial void OnvehicleChanging(int value);
     partial void OnvehicleChanged();
-    partial void OndelayChanging(int value);
+    partial void OntimestampChanging(System.DateTimeOffset value);
+    partial void OntimestampChanged();
+    partial void Ontimestamp_beforeChanging(System.DateTimeOffset value);
+    partial void Ontimestamp_beforeChanged();
+    partial void OnisAtStopChanging(System.Nullable<bool> value);
+    partial void OnisAtStopChanged();
+    partial void OndelayChanging(System.Nullable<int> value);
     partial void OndelayChanged();
+    partial void Oncurrent_stopChanging(string value);
+    partial void Oncurrent_stopChanged();
     partial void OndirectionChanging(string value);
     partial void OndirectionChanged();
-    partial void OnnextstopChanging(string value);
-    partial void OnnextstopChanged();
-    partial void OntimestamptChanging(System.Data.Linq.Binary value);
-    partial void OntimestamptChanged();
+    partial void OnjourneyChanging(string value);
+    partial void OnjourneyChanged();
+    partial void OnlatitudeChanging(string value);
+    partial void OnlatitudeChanged();
+    partial void OnlongitudeChanging(string value);
+    partial void OnlongitudeChanged();
+    partial void Onnext_stopChanging(string value);
+    partial void Onnext_stopChanged();
     #endregion
 		
 		public History()
 		{
+			this._Vehicles = default(EntityRef<Vehicles>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_line", DbType="Int NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
-		public int line
-		{
-			get
-			{
-				return this._line;
-			}
-			set
-			{
-				if ((this._line != value))
-				{
-					this.OnlineChanging(value);
-					this.SendPropertyChanging();
-					this._line = value;
-					this.SendPropertyChanged("line");
-					this.OnlineChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle", DbType="Int NOT NULL", IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle", DbType="Int NOT NULL", IsPrimaryKey=true)]
 		public int vehicle
 		{
 			get
@@ -192,6 +171,10 @@ namespace VVS.API.SQL
 			{
 				if ((this._vehicle != value))
 				{
+					if (this._Vehicles.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnvehicleChanging(value);
 					this.SendPropertyChanging();
 					this._vehicle = value;
@@ -201,410 +184,62 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_delay", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
-		public int delay
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp", DbType="DateTimeOffset NOT NULL", IsPrimaryKey=true)]
+		public System.DateTimeOffset timestamp
 		{
 			get
 			{
-				return this._delay;
+				return this._timestamp;
 			}
 			set
 			{
-				if ((this._delay != value))
+				if ((this._timestamp != value))
 				{
-					this.OndelayChanging(value);
+					this.OntimestampChanging(value);
 					this.SendPropertyChanging();
-					this._delay = value;
-					this.SendPropertyChanged("delay");
-					this.OndelayChanged();
+					this._timestamp = value;
+					this.SendPropertyChanged("timestamp");
+					this.OntimestampChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_direction", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string direction
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp_before", DbType="DateTimeOffset NOT NULL")]
+		public System.DateTimeOffset timestamp_before
 		{
 			get
 			{
-				return this._direction;
+				return this._timestamp_before;
 			}
 			set
 			{
-				if ((this._direction != value))
+				if ((this._timestamp_before != value))
 				{
-					this.OndirectionChanging(value);
+					this.Ontimestamp_beforeChanging(value);
 					this.SendPropertyChanging();
-					this._direction = value;
-					this.SendPropertyChanged("direction");
-					this.OndirectionChanged();
+					this._timestamp_before = value;
+					this.SendPropertyChanged("timestamp_before");
+					this.Ontimestamp_beforeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nextstop", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string nextstop
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isAtStop", DbType="Bit")]
+		public System.Nullable<bool> isAtStop
 		{
 			get
 			{
-				return this._nextstop;
+				return this._isAtStop;
 			}
 			set
 			{
-				if ((this._nextstop != value))
+				if ((this._isAtStop != value))
 				{
-					this.OnnextstopChanging(value);
+					this.OnisAtStopChanging(value);
 					this.SendPropertyChanging();
-					this._nextstop = value;
-					this.SendPropertyChanged("nextstop");
-					this.OnnextstopChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestampt", AutoSync=AutoSync.Always, DbType="rowversion NOT NULL", CanBeNull=false, IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary timestampt
-		{
-			get
-			{
-				return this._timestampt;
-			}
-			set
-			{
-				if ((this._timestampt != value))
-				{
-					this.OntimestamptChanging(value);
-					this.SendPropertyChanging();
-					this._timestampt = value;
-					this.SendPropertyChanged("timestampt");
-					this.OntimestamptChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Lines")]
-	public partial class Lines : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _name;
-		
-		private string _citycode;
-		
-		private System.Data.Linq.Binary _vehicle_type;
-		
-    #region Definitionen der Erweiterungsmethoden
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnnameChanging(string value);
-    partial void OnnameChanged();
-    partial void OncitycodeChanging(string value);
-    partial void OncitycodeChanged();
-    partial void Onvehicle_typeChanging(System.Data.Linq.Binary value);
-    partial void Onvehicle_typeChanged();
-    #endregion
-		
-		public Lines()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this.OnnameChanging(value);
-					this.SendPropertyChanging();
-					this._name = value;
-					this.SendPropertyChanged("name");
-					this.OnnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_citycode", DbType="NChar(5)")]
-		public string citycode
-		{
-			get
-			{
-				return this._citycode;
-			}
-			set
-			{
-				if ((this._citycode != value))
-				{
-					this.OncitycodeChanging(value);
-					this.SendPropertyChanging();
-					this._citycode = value;
-					this.SendPropertyChanged("citycode");
-					this.OncitycodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Binary(1) NOT NULL", CanBeNull=false, IsPrimaryKey=true, UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary vehicle_type
-		{
-			get
-			{
-				return this._vehicle_type;
-			}
-			set
-			{
-				if ((this._vehicle_type != value))
-				{
-					this.Onvehicle_typeChanging(value);
-					this.SendPropertyChanging();
-					this._vehicle_type = value;
-					this.SendPropertyChanged("vehicle_type");
-					this.Onvehicle_typeChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicles")]
-	public partial class Vehicles : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _db_id;
-		
-		private int _line;
-		
-		private System.Data.Linq.Binary _vehicle_type;
-		
-		private string _current_stop;
-		
-		private System.Nullable<int> _delay;
-		
-		private string _direction;
-		
-		private System.Nullable<bool> _isAtStop;
-		
-		private string _journey;
-		
-		private string _latitude;
-		
-		private string _longitude;
-		
-		private string _next_stop;
-		
-		private System.DateTimeOffset _timestamp;
-		
-		private System.DateTimeOffset _timestamp_before;
-		
-    #region Definitionen der Erweiterungsmethoden
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void Ondb_idChanging(string value);
-    partial void Ondb_idChanged();
-    partial void OnlineChanging(int value);
-    partial void OnlineChanged();
-    partial void Onvehicle_typeChanging(System.Data.Linq.Binary value);
-    partial void Onvehicle_typeChanged();
-    partial void Oncurrent_stopChanging(string value);
-    partial void Oncurrent_stopChanged();
-    partial void OndelayChanging(System.Nullable<int> value);
-    partial void OndelayChanged();
-    partial void OndirectionChanging(string value);
-    partial void OndirectionChanged();
-    partial void OnisAtStopChanging(System.Nullable<bool> value);
-    partial void OnisAtStopChanged();
-    partial void OnjourneyChanging(string value);
-    partial void OnjourneyChanged();
-    partial void OnlatitudeChanging(string value);
-    partial void OnlatitudeChanged();
-    partial void OnlongitudeChanging(string value);
-    partial void OnlongitudeChanged();
-    partial void Onnext_stopChanging(string value);
-    partial void Onnext_stopChanged();
-    partial void OntimestampChanging(System.DateTimeOffset value);
-    partial void OntimestampChanged();
-    partial void Ontimestamp_beforeChanging(System.DateTimeOffset value);
-    partial void Ontimestamp_beforeChanged();
-    #endregion
-		
-		public Vehicles()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_db_id", DbType="NChar(30) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string db_id
-		{
-			get
-			{
-				return this._db_id;
-			}
-			set
-			{
-				if ((this._db_id != value))
-				{
-					this.Ondb_idChanging(value);
-					this.SendPropertyChanging();
-					this._db_id = value;
-					this.SendPropertyChanged("db_id");
-					this.Ondb_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_line", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int line
-		{
-			get
-			{
-				return this._line;
-			}
-			set
-			{
-				if ((this._line != value))
-				{
-					this.OnlineChanging(value);
-					this.SendPropertyChanging();
-					this._line = value;
-					this.SendPropertyChanged("line");
-					this.OnlineChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Binary(1) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary vehicle_type
-		{
-			get
-			{
-				return this._vehicle_type;
-			}
-			set
-			{
-				if ((this._vehicle_type != value))
-				{
-					this.Onvehicle_typeChanging(value);
-					this.SendPropertyChanging();
-					this._vehicle_type = value;
-					this.SendPropertyChanged("vehicle_type");
-					this.Onvehicle_typeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_current_stop", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string current_stop
-		{
-			get
-			{
-				return this._current_stop;
-			}
-			set
-			{
-				if ((this._current_stop != value))
-				{
-					this.Oncurrent_stopChanging(value);
-					this.SendPropertyChanging();
-					this._current_stop = value;
-					this.SendPropertyChanged("current_stop");
-					this.Oncurrent_stopChanged();
+					this._isAtStop = value;
+					this.SendPropertyChanged("isAtStop");
+					this.OnisAtStopChanged();
 				}
 			}
 		}
@@ -629,6 +264,26 @@ namespace VVS.API.SQL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_current_stop", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string current_stop
+		{
+			get
+			{
+				return this._current_stop;
+			}
+			set
+			{
+				if ((this._current_stop != value))
+				{
+					this.Oncurrent_stopChanging(value);
+					this.SendPropertyChanging();
+					this._current_stop = value;
+					this.SendPropertyChanged("current_stop");
+					this.Oncurrent_stopChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_direction", DbType="Text", UpdateCheck=UpdateCheck.Never)]
 		public string direction
 		{
@@ -645,26 +300,6 @@ namespace VVS.API.SQL
 					this._direction = value;
 					this.SendPropertyChanged("direction");
 					this.OndirectionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isAtStop", DbType="Bit")]
-		public System.Nullable<bool> isAtStop
-		{
-			get
-			{
-				return this._isAtStop;
-			}
-			set
-			{
-				if ((this._isAtStop != value))
-				{
-					this.OnisAtStopChanging(value);
-					this.SendPropertyChanging();
-					this._isAtStop = value;
-					this.SendPropertyChanged("isAtStop");
-					this.OnisAtStopChanged();
 				}
 			}
 		}
@@ -749,42 +384,36 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp", DbType="DateTimeOffset NOT NULL")]
-		public System.DateTimeOffset timestamp
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicles_History", Storage="_Vehicles", ThisKey="vehicle", OtherKey="Id", IsForeignKey=true)]
+		public Vehicles Vehicles
 		{
 			get
 			{
-				return this._timestamp;
+				return this._Vehicles.Entity;
 			}
 			set
 			{
-				if ((this._timestamp != value))
+				Vehicles previousValue = this._Vehicles.Entity;
+				if (((previousValue != value) 
+							|| (this._Vehicles.HasLoadedOrAssignedValue == false)))
 				{
-					this.OntimestampChanging(value);
 					this.SendPropertyChanging();
-					this._timestamp = value;
-					this.SendPropertyChanged("timestamp");
-					this.OntimestampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_timestamp_before", DbType="DateTimeOffset NOT NULL")]
-		public System.DateTimeOffset timestamp_before
-		{
-			get
-			{
-				return this._timestamp_before;
-			}
-			set
-			{
-				if ((this._timestamp_before != value))
-				{
-					this.Ontimestamp_beforeChanging(value);
-					this.SendPropertyChanging();
-					this._timestamp_before = value;
-					this.SendPropertyChanged("timestamp_before");
-					this.Ontimestamp_beforeChanged();
+					if ((previousValue != null))
+					{
+						this._Vehicles.Entity = null;
+						previousValue.History.Remove(this);
+					}
+					this._Vehicles.Entity = value;
+					if ((value != null))
+					{
+						value.History.Add(this);
+						this._vehicle = value.Id;
+					}
+					else
+					{
+						this._vehicle = default(int);
+					}
+					this.SendPropertyChanged("Vehicles");
 				}
 			}
 		}
@@ -807,6 +436,371 @@ namespace VVS.API.SQL
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Lines")]
+	public partial class Lines : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Data.Linq.Binary _vehicle_type;
+		
+		private string _name;
+		
+		private string _citycode;
+		
+		private EntitySet<Vehicles> _Vehicles;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void Onvehicle_typeChanging(System.Data.Linq.Binary value);
+    partial void Onvehicle_typeChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OncitycodeChanging(string value);
+    partial void OncitycodeChanged();
+    #endregion
+		
+		public Lines()
+		{
+			this._Vehicles = new EntitySet<Vehicles>(new Action<Vehicles>(this.attach_Vehicles), new Action<Vehicles>(this.detach_Vehicles));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Binary(1) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary vehicle_type
+		{
+			get
+			{
+				return this._vehicle_type;
+			}
+			set
+			{
+				if ((this._vehicle_type != value))
+				{
+					this.Onvehicle_typeChanging(value);
+					this.SendPropertyChanging();
+					this._vehicle_type = value;
+					this.SendPropertyChanged("vehicle_type");
+					this.Onvehicle_typeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_citycode", DbType="NChar(4)")]
+		public string citycode
+		{
+			get
+			{
+				return this._citycode;
+			}
+			set
+			{
+				if ((this._citycode != value))
+				{
+					this.OncitycodeChanging(value);
+					this.SendPropertyChanging();
+					this._citycode = value;
+					this.SendPropertyChanged("citycode");
+					this.OncitycodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Lines_Vehicles", Storage="_Vehicles", ThisKey="Id", OtherKey="line")]
+		public EntitySet<Vehicles> Vehicles
+		{
+			get
+			{
+				return this._Vehicles;
+			}
+			set
+			{
+				this._Vehicles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Vehicles(Vehicles entity)
+		{
+			this.SendPropertyChanging();
+			entity.Lines = this;
+		}
+		
+		private void detach_Vehicles(Vehicles entity)
+		{
+			this.SendPropertyChanging();
+			entity.Lines = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicles")]
+	public partial class Vehicles : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _db_id;
+		
+		private int _line;
+		
+		private System.Data.Linq.Binary _vehicle_type;
+		
+		private EntitySet<History> _History;
+		
+		private EntityRef<Lines> _Lines;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void Ondb_idChanging(string value);
+    partial void Ondb_idChanged();
+    partial void OnlineChanging(int value);
+    partial void OnlineChanged();
+    partial void Onvehicle_typeChanging(System.Data.Linq.Binary value);
+    partial void Onvehicle_typeChanged();
+    #endregion
+		
+		public Vehicles()
+		{
+			this._History = new EntitySet<History>(new Action<History>(this.attach_History), new Action<History>(this.detach_History));
+			this._Lines = default(EntityRef<Lines>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_db_id", DbType="NChar(30) NOT NULL", CanBeNull=false)]
+		public string db_id
+		{
+			get
+			{
+				return this._db_id;
+			}
+			set
+			{
+				if ((this._db_id != value))
+				{
+					this.Ondb_idChanging(value);
+					this.SendPropertyChanging();
+					this._db_id = value;
+					this.SendPropertyChanged("db_id");
+					this.Ondb_idChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_line", DbType="Int NOT NULL")]
+		public int line
+		{
+			get
+			{
+				return this._line;
+			}
+			set
+			{
+				if ((this._line != value))
+				{
+					if (this._Lines.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnlineChanging(value);
+					this.SendPropertyChanging();
+					this._line = value;
+					this.SendPropertyChanged("line");
+					this.OnlineChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vehicle_type", DbType="Binary(1) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary vehicle_type
+		{
+			get
+			{
+				return this._vehicle_type;
+			}
+			set
+			{
+				if ((this._vehicle_type != value))
+				{
+					this.Onvehicle_typeChanging(value);
+					this.SendPropertyChanging();
+					this._vehicle_type = value;
+					this.SendPropertyChanged("vehicle_type");
+					this.Onvehicle_typeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicles_History", Storage="_History", ThisKey="Id", OtherKey="vehicle")]
+		public EntitySet<History> History
+		{
+			get
+			{
+				return this._History;
+			}
+			set
+			{
+				this._History.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Lines_Vehicles", Storage="_Lines", ThisKey="line", OtherKey="Id", IsForeignKey=true)]
+		public Lines Lines
+		{
+			get
+			{
+				return this._Lines.Entity;
+			}
+			set
+			{
+				Lines previousValue = this._Lines.Entity;
+				if (((previousValue != value) 
+							|| (this._Lines.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Lines.Entity = null;
+						previousValue.Vehicles.Remove(this);
+					}
+					this._Lines.Entity = value;
+					if ((value != null))
+					{
+						value.Vehicles.Add(this);
+						this._line = value.Id;
+					}
+					else
+					{
+						this._line = default(int);
+					}
+					this.SendPropertyChanged("Lines");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_History(History entity)
+		{
+			this.SendPropertyChanging();
+			entity.Vehicles = this;
+		}
+		
+		private void detach_History(History entity)
+		{
+			this.SendPropertyChanging();
+			entity.Vehicles = null;
 		}
 	}
 }

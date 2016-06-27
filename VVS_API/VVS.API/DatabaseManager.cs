@@ -20,15 +20,11 @@ namespace VVS.API
 
         public static void InsertLine(Line line)
         {
-            var entry           = new Lines();
-            entry.citycode      = line.CityCode;
-            entry.name          = line.Name;
-            var array           = new byte[] { (byte)line.VehicleType };
-            entry.vehicle_type  = new Binary(array);
+            var entry = TypeConverter.LineToLines(line);
 
             var table = dataContext.GetTable<Lines>();
             table.InsertOnSubmit(entry);
-            
+
         }
 
         public static void InsertLines(List<Line> lines)
@@ -37,11 +33,7 @@ namespace VVS.API
 
             foreach (var line in lines)
             {
-                var entry = new Lines();
-                entry.citycode = line.CityCode;
-                entry.name = line.Name;
-                var array = new byte[] { (byte)line.VehicleType };
-                entry.vehicle_type = new Binary(array);
+                var entry = TypeConverter.LineToLines(line);
                 list.Add(entry);
             }
 
@@ -51,24 +43,7 @@ namespace VVS.API
 
         public static void InsertVehicle(Vehicle vehicle)
         {
-            var entry = new Vehicles();
-
-            entry.db_id = vehicle.ID;
-            entry.line = vehicle.Line_id;
-            entry.current_stop = vehicle.CurrentStop;
-            entry.delay = vehicle.Delay;
-            entry.direction = vehicle.DirectionText;
-            entry.isAtStop = vehicle.IsAtStop;
-            entry.journey = vehicle.JourneyIdentifier;
-            entry.latitude = vehicle.Latitude;
-            entry.longitude = vehicle.Longitude;
-            entry.next_stop = vehicle.NextStop;
-            entry.timestamp = vehicle.Timestamp;
-            entry.timestamp_before = vehicle.TimestampBefore;
-
-            
-            var array = new byte[] { (byte)vehicle.Type};
-            entry.vehicle_type = new Binary(array);
+            var entry = TypeConverter.VehicleToVehicles(vehicle);
 
             var table = dataContext.GetTable<Vehicles>();
             table.InsertOnSubmit(entry);
@@ -80,24 +55,7 @@ namespace VVS.API
 
             foreach (var vehicle in vehicles)
             {
-                var entry = new Vehicles();
-
-                entry.db_id = vehicle.ID;
-                entry.line = vehicle.Line_id;
-                entry.current_stop = vehicle.CurrentStop;
-                entry.delay = vehicle.Delay;
-                entry.direction = vehicle.DirectionText;
-                entry.isAtStop = vehicle.IsAtStop;
-                entry.journey = vehicle.JourneyIdentifier;
-                entry.latitude = vehicle.Latitude;
-                entry.longitude = vehicle.Longitude;
-                entry.next_stop = vehicle.NextStop;
-                entry.timestamp = vehicle.Timestamp;
-                entry.timestamp_before = vehicle.TimestampBefore;
-
-
-                var array = new byte[] { (byte)vehicle.Type };
-                entry.vehicle_type = new Binary(array);
+                var entry = TypeConverter.VehicleToVehicles(vehicle);
                 list.Add(entry);
             }
 
@@ -116,19 +74,125 @@ namespace VVS.API
 
         public static List<Line> GetIds(List<Line> lines)
         {
-            var table = dataContext.GetTable<Lines>();
-
             foreach (var line in lines)
-            {
-                var array = new byte[] { (byte)line.VehicleType };
-                var type = new Binary(array);
-                var rec = table.First(v => v.name == line.Name 
-                                        && v.vehicle_type == type);
-
-                line.Id = rec.Id;
-            }
+                line.Id = GetId(line);
 
             return lines;
+        }
+
+        public static int GetId(Line line)
+        {
+            var table = dataContext.GetTable<Lines>();
+
+            var array = new byte[] { (byte)line.VehicleType };
+            var type = new Binary(array);
+            var rec = table.First(v => v.name == line.Name
+                                    && v.vehicle_type == type
+                                    && v.citycode == line.CityCode);
+
+            return rec.Id;
+        }
+
+        public static List<Line> GetLines()
+        {
+            var table = dataContext.GetTable<Lines>();
+            var list = new List<Line>();
+
+            foreach (var entry in table.ToList())
+                list.Add(TypeConverter.LinesToLine(entry));
+
+            return list;
+        }
+        public static List<Line> GetLines(string citycode)
+        {
+            var table = dataContext.GetTable<Lines>();
+            var list = new List<Line>();
+
+            var rec = table.Where(l => l.citycode == citycode);
+
+            foreach (var entry in rec)
+                list.Add(TypeConverter.LinesToLine(entry));
+
+            return list;
+        }
+        public static List<Line> GetLines(VehicleType type)
+        {
+            var table = dataContext.GetTable<Lines>();
+            var list = new List<Line>();
+
+            var array = new byte[] { (byte)type };
+            var vehicle_type = new Binary(array);
+
+            var rec = table.Where(l => l.vehicle_type == vehicle_type);
+
+            foreach (var entry in rec)
+                list.Add(TypeConverter.LinesToLine(entry));
+
+            return list;
+        }
+        public static List<Line> GetLines(VehicleType type, string citycode)
+        {
+            var table = dataContext.GetTable<Lines>();
+            var list = new List<Line>();
+
+            var array = new byte[] { (byte)type };
+            var vehicle_type = new Binary(array);
+
+            var rec = table.Where(l => l.vehicle_type == vehicle_type && l.citycode == citycode);
+
+            foreach (var entry in rec)
+                list.Add(TypeConverter.LinesToLine(entry));
+
+            return list;
+        }
+
+        public static Line GetLine(int id)
+        {
+            var table = dataContext.GetTable<Lines>();
+
+            var rec = table.First(l => l.Id == id);
+                        
+            return TypeConverter.LinesToLine(rec);
+        }
+        public static Line GetLine(string name, string citycode, VehicleType type)
+        {
+            var table = dataContext.GetTable<Lines>();
+            var vehicle_type = TypeConverter.VehicleTypeToBinary(type);
+
+            var rec = table.First(l => l.name == name && l.citycode == citycode && l.vehicle_type == vehicle_type);
+
+            return TypeConverter.LinesToLine(rec);
+        }
+
+        public static List<Vehicle> GetVehicles()
+        {
+            var table = dataContext.GetTable<Vehicles>();
+            var list = new List<Vehicle>();
+
+            foreach (var entry in table.ToList())
+                list.Add(TypeConverter.VehiclesToVehicle(entry));
+
+            return list;
+        }
+        public static List<Vehicle> GetVehicles(int line_id)
+        {
+            var table = dataContext.GetTable<Vehicles>();
+            var list = new List<Vehicle>();
+            var rec = table.Where(v => v.line == line_id);
+
+            foreach (var entry in rec)
+                list.Add(TypeConverter.VehiclesToVehicle(entry));
+
+            return list;
+        }
+
+        public static Vehicle GetVehicle(string db_id)
+        {
+            var table = dataContext.GetTable<Vehicles>();
+
+            var rec = table.First(v => v.db_id == db_id);
+
+            return TypeConverter.VehiclesToVehicle(rec);
         }
 
         public static void Submit()

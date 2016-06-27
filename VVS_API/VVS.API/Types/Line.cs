@@ -8,7 +8,7 @@ namespace VVS.API.Types
     public class Line
     {
         public string Name { get; private set; }
-        public string CityCode { get; private set; }
+        public string CityCode { get; set; }
         public VehicleType VehicleType
         {
             get { return vehicleType; }
@@ -28,7 +28,7 @@ namespace VVS.API.Types
                 SetLine();
             }
         }
-        public int Delay { get { return averageDelay(); } }
+        public int Delay => averageDelay();
 
         private VehicleType vehicleType;
         private int id;
@@ -42,15 +42,8 @@ namespace VVS.API.Types
 
         }
 
-        public List<Vehicle> GetVehicles()
-        {
-            var list = new List<Vehicle>();
+        public List<Vehicle> GetVehicles() => Vehicles.Values.ToList();
 
-            foreach (var vehicle in Vehicles)
-                list.Add(vehicle.Value);
-
-            return list;
-        }
         public Dictionary<string, Vehicle> Vehicles { get; set; }
 
         public void SetLine()
@@ -62,17 +55,9 @@ namespace VVS.API.Types
             }
         }
 
-        private int averageDelay()
-        {
-            int sum = 0;
-            foreach (var item in Vehicles)
-                sum += item.Value.Delay;
-
-            if (Vehicles.Count > 0)
-                return sum / Vehicles.Count;
-            else
-                return 0;
-        }
+        private int averageDelay() => Vehicles.Count == 0
+                ? 0
+                : Vehicles.Values.Sum(v => v.Delay) / Vehicles.Count;
 
         public override string ToString()
         {

@@ -2,23 +2,37 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Entrys">
   <DataContextMoniker Name="/VVSDatabaseDataContext" />
   <nestedChildShapes>
-    <classShape Id="422678e5-69b0-42fc-b33e-d8055ad384a3" absoluteBounds="2.5, 2.5, 2, 2.1554996744791666">
+    <classShape Id="31ee4ee0-f44b-4db9-b836-5f97d9f59eea" absoluteBounds="6.25, 1, 2, 2.9247054036458326">
       <DataClassMoniker Name="/VVSDatabaseDataContext/History" />
       <nestedChildShapes>
-        <elementListCompartment Id="507dfff5-cacd-4554-8d4c-d82e2edeace9" absoluteBounds="2.515, 2.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="c31a62da-7821-4afe-846e-5c669cc34dc7" absoluteBounds="6.265, 1.46, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="64b1896f-2475-41a7-b0f7-e12f66df04e8" absoluteBounds="5, 0.875, 2, 1.5785953776041666">
+    <classShape Id="35eed541-0e52-4213-ab8e-44d3861139e7" absoluteBounds="0.75, 1.625, 2, 1.5785953776041666">
       <DataClassMoniker Name="/VVSDatabaseDataContext/Lines" />
       <nestedChildShapes>
-        <elementListCompartment Id="3b8d6a8d-bf0e-4303-9c87-592cbc15beb3" absoluteBounds="5.015, 1.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="d8b8dc40-de22-465c-a812-a0ef274869a4" absoluteBounds="0.765, 2.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="9096b3ce-1c50-4d58-abc7-106b0814ffb2" absoluteBounds="8.375, 2.625, 2, 3.5016097005208326">
+    <classShape Id="708f3baf-2192-4465-a324-336aa9ea0774" absoluteBounds="3.5, 1.625, 2, 1.5785953776041666">
       <DataClassMoniker Name="/VVSDatabaseDataContext/Vehicles" />
       <nestedChildShapes>
-        <elementListCompartment Id="473e3cf7-a672-4a1e-b4b7-b2ac26e2abcd" absoluteBounds="8.39, 3.085, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="535a6e21-ce5a-44a9-8226-2c414285080c" absoluteBounds="3.515, 2.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <associationConnector edgePoints="[(5.5 : 2.41429768880208); (6.25 : 2.41429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/VVSDatabaseDataContext/Vehicles/Vehicles_History" />
+      <nodes>
+        <classShapeMoniker Id="708f3baf-2192-4465-a324-336aa9ea0774" />
+        <classShapeMoniker Id="31ee4ee0-f44b-4db9-b836-5f97d9f59eea" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 2.41429768880208); (3.5 : 2.41429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/VVSDatabaseDataContext/Lines/Lines_Vehicles" />
+      <nodes>
+        <classShapeMoniker Id="35eed541-0e52-4213-ab8e-44d3861139e7" />
+        <classShapeMoniker Id="708f3baf-2192-4465-a324-336aa9ea0774" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

@@ -2,39 +2,37 @@
   <Connection Mode="AppSettings" ConnectionString="Data Source=KRUEGERM-NB\NAV90SQL;Initial Catalog=VVSBase;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="VVS.API.Properties.Settings" SettingsPropertyName="VVSBaseConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.History" Member="History">
     <Type Name="History">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="line" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="vehicle" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="delay" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="direction" Type="System.String" DbType="Text" CanBeNull="true" />
-      <Column Name="nextstop" Type="System.String" DbType="Text" CanBeNull="true" />
-      <Column Name="timestampt" Type="System.Data.Linq.Binary" DbType="rowversion NOT NULL" CanBeNull="false" IsVersion="true" />
+      <Column Name="timestamp" Type="System.DateTimeOffset" DbType="DateTimeOffset NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="timestamp_before" Type="System.DateTimeOffset" DbType="DateTimeOffset NOT NULL" CanBeNull="false" />
+      <Column Name="isAtStop" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="delay" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="current_stop" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="direction" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="journey" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="latitude" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="longitude" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="next_stop" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Vehicles_History" Member="Vehicles" ThisKey="vehicle" OtherKey="Id" Type="Vehicles" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Lines" Member="Lines">
     <Type Name="Lines">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="NChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="citycode" Type="System.String" DbType="NChar(5)" CanBeNull="true" />
-      <Column Name="vehicle_type" Type="System.Data.Linq.Binary" DbType="Binary(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="vehicle_type" Type="System.Data.Linq.Binary" DbType="Binary(1) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="citycode" Type="System.String" DbType="NChar(4)" CanBeNull="true" />
+      <Association Name="Lines_Vehicles" Member="Vehicles" ThisKey="Id" OtherKey="line" Type="Vehicles" />
     </Type>
   </Table>
   <Table Name="dbo.Vehicles" Member="Vehicles">
     <Type Name="Vehicles">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="db_id" Type="System.String" DbType="NChar(30) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="line" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="db_id" Type="System.String" DbType="NChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="line" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="vehicle_type" Type="System.Data.Linq.Binary" DbType="Binary(1) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="current_stop" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="delay" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="direction" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="isAtStop" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="journey" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="latitude" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="longitude" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="next_stop" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="timestamp" Type="System.DateTimeOffset" DbType="DateTimeOffset NOT NULL" CanBeNull="false" />
-      <Column Name="timestamp_before" Type="System.DateTimeOffset" DbType="DateTimeOffset NOT NULL" CanBeNull="false" />
+      <Association Name="Vehicles_History" Member="History" ThisKey="Id" OtherKey="vehicle" Type="History" />
+      <Association Name="Lines_Vehicles" Member="Lines" ThisKey="line" OtherKey="Id" Type="Lines" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

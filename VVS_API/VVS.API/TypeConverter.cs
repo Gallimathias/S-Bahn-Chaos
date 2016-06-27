@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VVS.API.SQL;
 using VVS.API.Types;
 
 namespace VVS.API
@@ -46,32 +48,108 @@ namespace VVS.API
             }
         }
 
-        public static Line ToLine(RawData data)
+        public static Line RawToLine(RawData data)
         {
             var array = data.LineText.Split(' ');
             VehicleType type = StringToType(array[0]);
             return new Line(array[1], type);
         }
 
-        public static Vehicle ToVehicle(RawData data)
+        public static Vehicle RawToVehicle(RawData data)
         {
             var vehicle = new Vehicle();
-            
-            vehicle.CurrentStop         = data.CurrentStop;
-            vehicle.Delay               = data.Delay;
-            vehicle.DirectionText       = data.DirectionText;
-            vehicle.ID                  = data.ID;
-            vehicle.IsAtStop            = data.IsAtStop;
-            vehicle.JourneyIdentifier   = data.JourneyIdentifier;
-            vehicle.Latitude            = data.Latitude;
-            vehicle.LatitudeBefore      = data.LatitudeBefore;
-            vehicle.Longitude           = data.Longitude;
-            vehicle.LongitudeBefore     = data.LongitudeBefore;
-            vehicle.NextStop            = data.NextStop;
-            vehicle.Timestamp           = data.Timestamp;
-            vehicle.TimestampBefore     = data.TimestampBefore;
+
+            vehicle.CurrentStop = data.CurrentStop;
+            vehicle.Delay = data.Delay;
+            vehicle.DirectionText = data.DirectionText;
+            vehicle.ID = data.ID;
+            vehicle.IsAtStop = data.IsAtStop;
+            vehicle.JourneyIdentifier = data.JourneyIdentifier;
+            vehicle.Latitude = data.Latitude;
+            vehicle.LatitudeBefore = data.LatitudeBefore;
+            vehicle.Longitude = data.Longitude;
+            vehicle.LongitudeBefore = data.LongitudeBefore;
+            vehicle.NextStop = data.NextStop;
+            vehicle.Timestamp = data.Timestamp;
+            vehicle.TimestampBefore = data.TimestampBefore;
 
             return vehicle;
+        }
+
+        public static Lines LineToLines(Line line)
+        {
+            var entry = new Lines();
+            entry.citycode = line.CityCode;
+            entry.name = line.Name;
+            entry.vehicle_type = VehicleTypeToBinary(line.VehicleType);
+
+            return entry;
+        }
+
+        public static Line LinesToLine(Lines entry)
+        {
+            VehicleType type = BinaryToVehicleType(entry.vehicle_type);
+
+            var line = new Line(entry.name, type);
+            line.CityCode = entry.citycode;
+            line.Id = entry.Id;
+
+            return line;
+        }
+
+        public static Vehicles VehicleToVehicles(Vehicle vehicle)
+        {
+            var entry = new Vehicles();
+
+            entry.db_id = vehicle.ID;
+            //entry.line = vehicle.Line_id;
+            //entry.current_stop = vehicle.CurrentStop;
+            //entry.delay = vehicle.Delay;
+            //entry.direction = vehicle.DirectionText;
+            //entry.isAtStop = vehicle.IsAtStop;
+            //entry.journey = vehicle.JourneyIdentifier;
+            //entry.latitude = vehicle.Latitude;
+            //entry.longitude = vehicle.Longitude;
+            //entry.next_stop = vehicle.NextStop;
+            //entry.timestamp = vehicle.Timestamp;
+            //entry.timestamp_before = vehicle.TimestampBefore;
+            
+            entry.vehicle_type = VehicleTypeToBinary(vehicle.Type);
+
+            return entry;
+        }
+        
+        public static Vehicle VehiclesToVehicle(Vehicles entry)
+        {
+            var vehicle = new Vehicle();
+
+            vehicle.ID = entry.db_id;
+            vehicle.Line_id = entry.line;
+            //vehicle.CurrentStop = entry.current_stop;
+            //vehicle.Delay = entry.delay.Value;
+            //vehicle.DirectionText = entry.direction;
+            //vehicle.IsAtStop = entry.isAtStop.Value;
+            //vehicle.JourneyIdentifier = entry.journey;
+            //vehicle.Latitude = entry.latitude;
+            //vehicle.Longitude = entry.longitude;
+            //vehicle.NextStop = entry.next_stop;
+            //vehicle.Timestamp = entry.timestamp;
+            //vehicle.TimestampBefore = entry.timestamp_before;
+            vehicle.Type = BinaryToVehicleType(entry.vehicle_type);
+
+            return vehicle;
+        }
+
+        public static Binary VehicleTypeToBinary(VehicleType vehicleType)
+        {
+            var array = new byte[] { (byte)vehicleType };
+            return new Binary(array);
+        }
+
+        public static VehicleType BinaryToVehicleType(Binary binary)
+        {
+            var array = binary.ToArray();
+            return (VehicleType)array[0];
         }
     }
 }

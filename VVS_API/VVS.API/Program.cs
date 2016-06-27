@@ -11,21 +11,22 @@ namespace VVS.API
 {
     class Program
     {
+        public static readonly Dictionary<string, Vehicle> 
+
         static void Main(string[] args)
         {
             DatabaseManager.Connect();
-            APIConnection.BeginReciveData();
+
+            APIConnection.Lines = DatabaseManager.GetLines("stgt");
+
+            foreach (var line in APIConnection.Lines)
+                foreach (var vehicle in DatabaseManager.GetVehicles(line.Id))
+                    line.Vehicles.Add(vehicle.ID, vehicle);
             
-            while (true) {
-                Console.ReadLine();
-                var l = APIConnection.Lines.ToList();
-                DatabaseManager.InsertLines(l);
-                DatabaseManager.Submit();
-                Console.WriteLine("Finish Database Insert");
-                APIConnection.Lines = DatabaseManager.GetIds(l);
-                Console.WriteLine("Get all Id's");
-                
-            };
+
+            APIConnection.BeginReciveData();
+
+            while (true) { };
         }
     }
 }

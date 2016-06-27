@@ -28,9 +28,9 @@ namespace VVS.API.Types
         public DateTimeOffset Timestamp { get; set; }
         public DateTimeOffset TimestampBefore { get; set; }
 
-        public Line ToLine() => TypeConverter.ToLine(this);
+        public Line ToLine() => TypeConverter.RawToLine(this);
 
-        public Vehicle ToVehicle() => TypeConverter.ToVehicle(this);
+        public Vehicle ToVehicle() => TypeConverter.RawToVehicle(this);
 
         public override string ToString() => LineText;
 
