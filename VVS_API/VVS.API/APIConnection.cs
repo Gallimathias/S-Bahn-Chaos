@@ -13,18 +13,20 @@ using VVS.API.Types;
 namespace VVS.API
 {
     static class APIConnection
-    {        
-        public static List<Line> Lines { get; set; }
+    {
+        public static Dictionary<int, Line> Lines { get; set; }
 
         public static async Task<List<RawData>> ReadLocData()
         {
+            var unix =(long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             var nvc = new StringBuilder();
             nvc.Append("CoordSystem=NBWT&");
-            nvc.Append("ts=1464121860493&");
-            nvc.Append("ModCode=0,1,3,5&");
-            nvc.Append("_1464124645590");
+            nvc.Append($"ts={unix}&");
+            nvc.Append("ModCode=0,1,3,5");
 
-            using (StreamReader reader = new StreamReader(await new WebClient().OpenReadTaskAsync($"http://mobil.vvs.de/VELOC?{nvc.ToString()}")))
+            unix =(long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+
+            using (StreamReader reader = new StreamReader(await new WebClient().OpenReadTaskAsync($"http://mobil.vvs.de/VELOC?{nvc.ToString()}&_{unix}")))
                 return JArray.Parse(await reader.ReadToEndAsync()).Select(t => t.ToObject<RawData>()).ToList();
         }
 
@@ -66,14 +68,14 @@ namespace VVS.API
         public static async Task BeginReciveData()
         {
             var are = new AutoResetEvent(true);
-            Lines = new List<Line>();
+            Lines = new Dictionary<int, Line>();
 
             while (true)
             {
                 are.WaitOne(30000);
                 RawToLine(await ReadLocData());
                 Console.WriteLine("Finish");
-            }          
+            }
         }
 
         public static void RawToLine(List<RawData> Data)
@@ -81,23 +83,35 @@ namespace VVS.API
             foreach (var item in Data)
             {
                 var line = item.ToLine();
-                line.CityCode = "stgt"; //for Debugging
+                var key = line.GetHashCode();
 
-                if (!Lines.Exists(l => l.Name == line.Name && l.VehicleType == line.VehicleType && l.CityCode == line.CityCode))
-                    Lines.Add(line);
-
-                line = Lines.First(l => l.Name == line.Name && l.VehicleType == line.VehicleType && l.CityCode == line.CityCode);
-
-                var vehicle = item.ToVehicle();
-
-                if (line.Vehicles.ContainsKey(vehicle.ID))
+                if (Lines.ContainsKey(key))
                 {
-                    Lines.First(l => l.Name == line.Name && l.VehicleType == line.VehicleType && l.CityCode == line.CityCode).Vehicles.Remove(vehicle.ID);
-                    Lines.First(l => l.Name == line.Name && l.VehicleType == line.VehicleType && l.CityCode == line.CityCode).Vehicles.Add(vehicle.ID, vehicle);
+                    Lines.TryGetValue(key, out line);
+                    Lines.Remove(key);
+
+                    var vehicle = item.ToVehicle();
+
+                    if (line.Vehicles.ContainsKey(vehicle.ID))
+                    {
+                        Vehicle temp;
+                        line.Vehicles.TryGetValue(vehicle.ID, out temp);
+                        temp = vehicle;
+                        line.Vehicles.Remove(vehicle.ID);
+                        line.Vehicles.Add(vehicle.ID, temp);
+                    }
+                    else
+                    {
+                        line.Vehicles.Add(vehicle.ID, vehicle);
+                    }
+
+                    Lines.Add(key, line);
                 }
                 else
                 {
-                    Lines.First(l => l.Name == line.Name && l.VehicleType == line.VehicleType && l.CityCode == line.CityCode).Vehicles.Add(vehicle.ID, vehicle);
+                    var vehicle = item.ToVehicle();
+                    line.Vehicles.Add(vehicle.ID, vehicle);
+                    Lines.Add(key, line);
                 }
             }
 

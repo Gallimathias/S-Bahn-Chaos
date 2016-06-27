@@ -1,6 +1,9 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using VVS.API.SQL;
 
 namespace VVS.API.Types
@@ -62,6 +65,16 @@ namespace VVS.API.Types
         public override string ToString()
         {
             return $"{VehicleType.ToString()} {Name}";
+        }
+
+        public override int GetHashCode()
+        {
+            var bytes = Encoding.UTF8.GetBytes($"{Name}{CityCode}{VehicleType}");
+
+            using (SHA512 sha = new SHA512Managed())
+                bytes = sha.ComputeHash(bytes);
+
+            return Convert.ToInt32(bytes);
         }
     }
 
