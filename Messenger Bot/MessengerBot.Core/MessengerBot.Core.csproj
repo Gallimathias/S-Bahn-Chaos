@@ -61,13 +61,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SQL\Entrys.cs">
-      <DependentUpon>Entrys.dbml</DependentUpon>
+    <Compile Include="SQL\BotDatabase.cs">
+      <DependentUpon>BotDatabase.dbml</DependentUpon>
     </Compile>
-    <Compile Include="SQL\Entrys.designer.cs">
+    <Compile Include="SQL\BotDatabase.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Entrys.dbml</DependentUpon>
+      <DependentUpon>BotDatabase.dbml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -77,9 +77,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="SQL\Entrys.dbml">
+    <None Include="SQL\BotDatabase.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Entrys.designer.cs</LastGenOutput>
+      <LastGenOutput>BotDatabase.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -87,13 +87,11 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SQL\Entrys.dbml.layout">
-      <DependentUpon>Entrys.dbml</DependentUpon>
+    <None Include="SQL\BotDatabase.dbml.layout">
+      <DependentUpon>BotDatabase.dbml</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

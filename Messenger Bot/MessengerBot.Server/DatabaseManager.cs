@@ -9,29 +9,12 @@ namespace MessengerBot.Server
 {
     internal static class DatabaseManager
     {
-        private static DataContext database;
+        private static BotDatabaseDataContext database;
         private static StringBuilder stringBuilder;
         private static string connectionString;
         public static void Connect()
         {
-            connectionString = Properties.Settings.Default.TestBaseConnectionString;
-
-            stringBuilder = new StringBuilder();
-            stringBuilder.Append(@"Data Source = KRUEGERM - NB\NAV90SQL;");
-            stringBuilder.Append("Initial Catalog = TestBase;");
-            stringBuilder.Append("Integrated Security = True;");
-            stringBuilder.Append("Persist Security Info = False;");
-            stringBuilder.Append("Pooling = False;");
-            stringBuilder.Append("MultipleActiveResultSets = False;");
-            stringBuilder.Append("Connect Timeout = 60;");
-            stringBuilder.Append("Encrypt = False;");
-            stringBuilder.Append("TrustServerCertificate = True");
-
-            database = new DataContext(connectionString);
-
-            
-
-
+            database = new BotDatabaseDataContext();
         }
 
         public static void Insert(Types.Chat chat)
@@ -48,7 +31,7 @@ namespace MessengerBot.Server
 
             userTable.InsertOnSubmit(entry);
             database.SubmitChanges();
-            
+
         }
     }
 }

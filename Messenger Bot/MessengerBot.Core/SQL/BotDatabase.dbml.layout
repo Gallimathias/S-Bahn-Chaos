@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="UserEntry">
+  <DataContextMoniker Name="/BotDatabaseDataContext" />
+  <nestedChildShapes>
+    <classShape Id="fb392945-c0be-4336-87fd-c94fba49239a" absoluteBounds="3.25, 3.25, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/BotDatabaseDataContext/Abonements" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0f0f65db-3e1f-425d-a1fb-75c52ef99f6d" absoluteBounds="3.265, 3.71, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4213f5d3-e45b-4a62-83bd-8f5d844fba86" absoluteBounds="3.25, 6.375, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/BotDatabaseDataContext/Blacklist" />
+      <nestedChildShapes>
+        <elementListCompartment Id="94284436-f8a6-4a21-b65d-a92f45af4e06" absoluteBounds="3.2649999999999997, 6.835, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9a9d6987-3fff-40dc-b467-2a998cb25a74" absoluteBounds="0.5, 3.5, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/BotDatabaseDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b4c47253-9353-4479-bc91-3ee384115d33" absoluteBounds="0.515, 3.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cdd71fae-d5d3-48e2-ba8a-7a9e40611c68" absoluteBounds="3.25, 1.125, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/BotDatabaseDataContext/Whitelist" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5417009a-3b75-490c-9a34-d7add8b71035" absoluteBounds="3.2649999999999997, 1.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.25 : 5.98240397135417); (4.25 : 6.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BotDatabaseDataContext/Abonements/Abonements_Blacklist" />
+      <nodes>
+        <classShapeMoniker Id="fb392945-c0be-4336-87fd-c94fba49239a" />
+        <classShapeMoniker Id="4213f5d3-e45b-4a62-83bd-8f5d844fba86" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.5 : 4.67390055338542); (3.25 : 4.67390055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BotDatabaseDataContext/User/User_Abonements" />
+      <nodes>
+        <classShapeMoniker Id="9a9d6987-3fff-40dc-b467-2a998cb25a74" />
+        <classShapeMoniker Id="fb392945-c0be-4336-87fd-c94fba49239a" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.5 : 5.84780110677083); (1.5 : 7.26044840494792); (3.25 : 7.26044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BotDatabaseDataContext/User/User_Blacklist" />
+      <nodes>
+        <classShapeMoniker Id="9a9d6987-3fff-40dc-b467-2a998cb25a74" />
+        <classShapeMoniker Id="4213f5d3-e45b-4a62-83bd-8f5d844fba86" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.25 : 3.25); (4.25 : 2.89589680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BotDatabaseDataContext/Abonements/Abonements_Whitelist" />
+      <nodes>
+        <classShapeMoniker Id="fb392945-c0be-4336-87fd-c94fba49239a" />
+        <classShapeMoniker Id="cdd71fae-d5d3-48e2-ba8a-7a9e40611c68" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.5 : 3.5); (1.5 : 2.01044840494792); (3.25 : 2.01044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/BotDatabaseDataContext/User/User_Whitelist" />
+      <nodes>
+        <classShapeMoniker Id="9a9d6987-3fff-40dc-b467-2a998cb25a74" />
+        <classShapeMoniker Id="cdd71fae-d5d3-48e2-ba8a-7a9e40611c68" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
