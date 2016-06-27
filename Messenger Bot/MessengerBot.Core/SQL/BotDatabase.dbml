@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TestBase" Class="BotDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=KRUEGERM-NB\NAV90SQL;Initial Catalog=TestBase;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="MessengerBot.Core.Properties.Settings" SettingsPropertyName="TestBaseConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BotDataBase" Class="BotDatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=KRUEGERM-NB\NAV90SQL;Initial Catalog=BotDataBase;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="MessengerBot.Core.Properties.Settings" SettingsPropertyName="BotDataBaseConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Abonements" Member="Abonements">
     <Type Name="Abonements">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -31,7 +31,7 @@
   <Table Name="dbo.[User]" Member="User">
     <Type Name="User">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Telegram_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Telegram_Id" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="[group]" Member="group" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="chat_id" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
       <Column Name="timestamp" Type="System.Data.Linq.Binary" DbType="rowversion NOT NULL" CanBeNull="false" IsVersion="true" />

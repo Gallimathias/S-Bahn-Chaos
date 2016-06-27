@@ -22,7 +22,7 @@ namespace MessengerBot.Core.SQL
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="TestBase")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="BotDataBase")]
 	public partial class BotDatabaseDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -45,7 +45,7 @@ namespace MessengerBot.Core.SQL
     #endregion
 		
 		public BotDatabaseDataContext() : 
-				base(global::MessengerBot.Core.Properties.Settings.Default.TestBaseConnectionString, mappingSource)
+				base(global::MessengerBot.Core.Properties.Settings.Default.BotDataBaseConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -722,7 +722,7 @@ namespace MessengerBot.Core.SQL
 		
 		private int _Id;
 		
-		private int _Telegram_Id;
+		private long _Telegram_Id;
 		
 		private System.Nullable<int> _group;
 		
@@ -748,7 +748,7 @@ namespace MessengerBot.Core.SQL
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnTelegram_IdChanging(int value);
+    partial void OnTelegram_IdChanging(long value);
     partial void OnTelegram_IdChanged();
     partial void OngroupChanging(System.Nullable<int> value);
     partial void OngroupChanged();
@@ -792,8 +792,8 @@ namespace MessengerBot.Core.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Telegram_Id", DbType="Int NOT NULL", UpdateCheck=UpdateCheck.Never)]
-		public int Telegram_Id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Telegram_Id", DbType="BigInt NOT NULL", UpdateCheck=UpdateCheck.Never)]
+		public long Telegram_Id
 		{
 			get
 			{
