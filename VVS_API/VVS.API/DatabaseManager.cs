@@ -12,13 +12,14 @@ namespace VVS.API
     internal static class DatabaseManager
     {
         private static VVSDatabaseDataContext dataContext;
+        private static int? LinesCount;
 
         public static void Connect()
         {
             dataContext = new VVSDatabaseDataContext();
         }
 
-        public static void InsertLine(Line line)
+        public static async Task InsertLine(Line line)
         {
             var entry = TypeConverter.LineToLines(line);
 
@@ -27,7 +28,7 @@ namespace VVS.API
 
         }
 
-        public static void InsertLines(List<Line> lines)
+        public static async Task InsertLines(List<Line> lines)
         {
             var list = new List<Lines>();
 
@@ -41,15 +42,15 @@ namespace VVS.API
             table.InsertAllOnSubmit(list);
         }
 
-        public static void InsertVehicle(Vehicle vehicle)
+        public static async Task InsertVehicle(Vehicle vehicle)
         {
             var entry = TypeConverter.VehicleToVehicles(vehicle);
 
             var table = dataContext.GetTable<Vehicles>();
             table.InsertOnSubmit(entry);
         }
-
-        public static void InsertVehicles(List<Vehicle> vehicles)
+                      
+        public static async Task InsertVehicles(List<Vehicle> vehicles)
         {
             var list = new List<Vehicles>();
 
@@ -62,17 +63,17 @@ namespace VVS.API
             var table = dataContext.GetTable<Vehicles>();
             table.InsertAllOnSubmit(list);
         }
-        public static void InsertVehicles(Line line)
+        public static async Task InsertVehicles(Line line)
         {
             InsertVehicles(line.GetVehicles());
         }
-        public static void InsertVehicles(List<Line> lines)
+        public static async Task InsertVehicles(List<Line> lines)
         {
             foreach (var line in lines)
                 InsertVehicles(line);
         }
 
-        public static List<Line> GetIds(List<Line> lines)
+        public static async Task<List<Line>> GetIds(List<Line> lines)
         {
             foreach (var line in lines)
                 line.Id = GetId(line);
@@ -80,12 +81,17 @@ namespace VVS.API
             return lines;
         }
 
-        public static int GetId(Line line)
+        public static int? GetId(Line line)
         {
             var table = dataContext.GetTable<Lines>();
 
-            var array = new byte[] { (byte)line.VehicleType };
-            var type = new Binary(array);
+            if (!LinesCount.HasValue)
+                LinesCount = table.Count();
+            
+            if (LinesCount.Value == 0)
+                return null;
+
+            var type = TypeConverter.VehicleTypeToBinary(line.VehicleType);
             var rec = table.First(v => v.name == line.Name
                                     && v.vehicle_type == type
                                     && v.citycode == line.CityCode);
@@ -93,7 +99,7 @@ namespace VVS.API
             return rec.Id;
         }
 
-        public static List<Line> GetLines()
+        public static async Task<List<Line>> GetLines()
         {
             var table = dataContext.GetTable<Lines>();
             var list = new List<Line>();
@@ -103,7 +109,7 @@ namespace VVS.API
 
             return list;
         }
-        public static List<Line> GetLines(string citycode)
+        public static async Task<List<Line>> GetLines(string citycode)
         {
             var table = dataContext.GetTable<Lines>();
             var list = new List<Line>();
@@ -115,7 +121,7 @@ namespace VVS.API
 
             return list;
         }
-        public static List<Line> GetLines(VehicleType type)
+        public static async Task<List<Line>> GetLines(VehicleType type)
         {
             var table = dataContext.GetTable<Lines>();
             var list = new List<Line>();
@@ -130,7 +136,7 @@ namespace VVS.API
 
             return list;
         }
-        public static List<Line> GetLines(VehicleType type, string citycode)
+        public static async Task<List<Line>> GetLines(VehicleType type, string citycode)
         {
             var table = dataContext.GetTable<Lines>();
             var list = new List<Line>();
@@ -164,7 +170,7 @@ namespace VVS.API
             return TypeConverter.LinesToLine(rec);
         }
 
-        public static List<Vehicle> GetVehicles()
+        public static async Task<List<Vehicle>> GetVehicles()
         {
             var table = dataContext.GetTable<Vehicles>();
             var list = new List<Vehicle>();
@@ -174,7 +180,7 @@ namespace VVS.API
 
             return list;
         }
-        public static List<Vehicle> GetVehicles(int line_id)
+        public static async Task<List<Vehicle>> GetVehicles(int line_id)
         {
             var table = dataContext.GetTable<Vehicles>();
             var list = new List<Vehicle>();
@@ -195,9 +201,11 @@ namespace VVS.API
             return TypeConverter.VehiclesToVehicle(rec);
         }
 
-        public static void Submit()
+        public static async Task Submit()
         {
             dataContext.SubmitChanges(ConflictMode.ContinueOnConflict);
+
+            LinesCount = null;
         }
     }
 }

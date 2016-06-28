@@ -11,18 +11,33 @@ namespace VVS.API
 {
     class Program
     {
+        static Thread backgroundThread;
         static void Main(string[] args)
         {
-            //DatabaseManager.Connect();
+            DatabaseManager.Connect();
+            APIConnection.Initzialize();
 
-            //APIConnection.Lines = DatabaseManager.GetLines("stgt");
+            backgroundThread = new Thread(async () =>
+            {
+                while (true)
+                {
+                    await APIConnection.ReciveData();
 
-            //foreach (var line in APIConnection.Lines)
-            //    foreach (var vehicle in DatabaseManager.GetVehicles(line.Id))
-            //        line.Vehicles.Add(vehicle.ID, vehicle);
+                    foreach (var line in APIConnection.Lines)
+                    {
+                        var id = DatabaseManager.GetId(line.Value);
 
+                        lock (APIConnection.Lines)
+                            line.Value.Id = id;
+                    }
 
-            APIConnection.BeginReciveData();
+                    await DatabaseManager.Submit();
+                }
+            });
+
+            backgroundThread.IsBackground = true;
+
+            backgroundThread.Start();
 
             while (true) { };
         }

@@ -102,6 +102,7 @@ namespace VVS.API
             var entry = new Vehicles();
 
             entry.db_id = vehicle.ID;
+            entry.line = vehicle.Line_id;
             //entry.line = vehicle.Line_id;
             //entry.current_stop = vehicle.CurrentStop;
             //entry.delay = vehicle.Delay;

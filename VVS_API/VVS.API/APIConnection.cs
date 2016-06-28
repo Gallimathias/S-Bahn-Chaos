@@ -14,17 +14,23 @@ namespace VVS.API
 {
     static class APIConnection
     {
-        public static Dictionary<int, Line> Lines { get; set; }
+        public static Dictionary<string, Line> Lines { get; set; }
+
+
+        public static void Initzialize()
+        {
+            Lines = new Dictionary<string, Line>();
+        }
 
         public static async Task<List<RawData>> ReadLocData()
         {
-            var unix =(long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            var unix = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
             var nvc = new StringBuilder();
             nvc.Append("CoordSystem=NBWT&");
             nvc.Append($"ts={unix}&");
             nvc.Append("ModCode=0,1,3,5");
 
-            unix =(long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            unix = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
 
             using (StreamReader reader = new StreamReader(await new WebClient().OpenReadTaskAsync($"http://mobil.vvs.de/VELOC?{nvc.ToString()}&_{unix}")))
                 return JArray.Parse(await reader.ReadToEndAsync()).Select(t => t.ToObject<RawData>()).ToList();
@@ -65,17 +71,13 @@ namespace VVS.API
             return null;
         }
 
-        public static async Task BeginReciveData()
+        public static async Task ReciveData()
         {
-            var are = new AutoResetEvent(true);
-            Lines = new Dictionary<int, Line>();
-
-            while (true)
-            {
-                are.WaitOne(30000);
-                RawToLine(await ReadLocData());
-                Console.WriteLine("Finish");
-            }
+            Console.Write("Get Data....");
+            RawToLine(await ReadLocData());
+            Console.WriteLine("Finish");
+            Console.WriteLine($"Count: {Lines.Count}");
+            
         }
 
         public static void RawToLine(List<RawData> Data)
@@ -83,12 +85,16 @@ namespace VVS.API
             foreach (var item in Data)
             {
                 var line = item.ToLine();
-                var key = line.GetHashCode();
+                line.CityCode = "stgt";
+                var key = line.GetKey();
 
                 if (Lines.ContainsKey(key))
                 {
                     Lines.TryGetValue(key, out line);
-                    Lines.Remove(key);
+
+                    lock (Lines)
+                        Lines.Remove(key);
+
 
                     var vehicle = item.ToVehicle();
 
@@ -103,15 +109,27 @@ namespace VVS.API
                     else
                     {
                         line.Vehicles.Add(vehicle.ID, vehicle);
+
+                        if (line.Id != null)
+                        {
+                            vehicle.Line_id = line.Id.Value;
+                            DatabaseManager.InsertVehicle(vehicle);
+                        }
                     }
 
-                    Lines.Add(key, line);
+                    lock (Lines)
+                        Lines.Add(key, line);
+
                 }
                 else
                 {
                     var vehicle = item.ToVehicle();
                     line.Vehicles.Add(vehicle.ID, vehicle);
-                    Lines.Add(key, line);
+
+                    lock (Lines)
+                        Lines.Add(key, line);
+
+                    DatabaseManager.InsertLine(line);
                 }
             }
 

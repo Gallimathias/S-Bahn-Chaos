@@ -22,7 +22,7 @@ namespace VVS.API.Types
         }
 
 
-        public int Id
+        public int? Id
         {
             get { return id; }
             set
@@ -34,7 +34,7 @@ namespace VVS.API.Types
         public int Delay => averageDelay();
 
         private VehicleType vehicleType;
-        private int id;
+        private int? id;
 
         public Line(string name, VehicleType type = VehicleType.None)
         {
@@ -51,9 +51,12 @@ namespace VVS.API.Types
 
         public void SetLine()
         {
+            if (!id.HasValue)
+                return;
+
             foreach (var item in Vehicles)
             {
-                item.Value.Line_id = id;
+                item.Value.Line_id = id.Value;
                 item.Value.Type = vehicleType;
             }
         }
@@ -67,14 +70,15 @@ namespace VVS.API.Types
             return $"{VehicleType.ToString()} {Name}";
         }
 
-        public override int GetHashCode()
+        public string GetKey()
         {
-            var bytes = Encoding.UTF8.GetBytes($"{Name}{CityCode}{VehicleType}");
+            return $"{Name}.{CityCode}.{VehicleType}";
+            //var bytes = Encoding.UTF8.GetBytes(a);
 
-            using (SHA512 sha = new SHA512Managed())
-                bytes = sha.ComputeHash(bytes);
+            //using (SHA256Managed sha = new SHA256Managed())
+            //    bytes = sha.ComputeHash(bytes);
 
-            return Convert.ToInt32(bytes);
+            //return BitConverter.ToInt64(bytes,0);
         }
     }
 
