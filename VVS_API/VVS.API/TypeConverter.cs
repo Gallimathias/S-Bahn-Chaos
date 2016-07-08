@@ -126,16 +126,8 @@ namespace VVS.API
 
             vehicle.ID = entry.db_id;
             vehicle.Line_id = entry.line;
-            //vehicle.CurrentStop = entry.current_stop;
-            //vehicle.Delay = entry.delay.Value;
-            //vehicle.DirectionText = entry.direction;
-            //vehicle.IsAtStop = entry.isAtStop.Value;
-            //vehicle.JourneyIdentifier = entry.journey;
-            //vehicle.Latitude = entry.latitude;
-            //vehicle.Longitude = entry.longitude;
-            //vehicle.NextStop = entry.next_stop;
-            //vehicle.Timestamp = entry.timestamp;
-            //vehicle.TimestampBefore = entry.timestamp_before;
+            vehicle.Database_Id = entry.Id;
+            
             vehicle.Type = BinaryToVehicleType(entry.vehicle_type);
 
             return vehicle;
@@ -151,6 +143,24 @@ namespace VVS.API
         {
             var array = binary.ToArray();
             return (VehicleType)array[0];
+        }
+
+        public static History VehicleToHistory(Vehicle vehicle)
+        {
+            var history = new History();
+
+            history.current_stop = vehicle.CurrentStop;
+            history.delay = vehicle.Delay;
+            history.direction = vehicle.DirectionText;
+            history.isAtStop = vehicle.IsAtStop;
+            history.journey = vehicle.JourneyIdentifier;
+            history.latitude = vehicle.Latitude;
+            history.longitude = vehicle.Longitude;
+            history.next_stop = vehicle.NextStop;
+            history.timestamp = vehicle.Timestamp;
+            history.timestamp_before = vehicle.TimestampBefore;
+
+            return history;
         }
     }
 }

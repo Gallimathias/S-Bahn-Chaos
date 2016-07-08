@@ -4,6 +4,7 @@ namespace VVS.API.Types
 {
     public class Vehicle
     {
+        public int? Database_Id { get; set; }
         public int Line_id { get; set; }
         public string CurrentStop { get; set; }
         public int Delay { get; set; }

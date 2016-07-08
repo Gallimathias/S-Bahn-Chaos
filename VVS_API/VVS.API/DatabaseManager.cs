@@ -49,7 +49,7 @@ namespace VVS.API
             var table = dataContext.GetTable<Vehicles>();
             table.InsertOnSubmit(entry);
         }
-                      
+
         public static async Task InsertVehicles(List<Vehicle> vehicles)
         {
             var list = new List<Vehicles>();
@@ -65,12 +65,37 @@ namespace VVS.API
         }
         public static async Task InsertVehicles(Line line)
         {
-            InsertVehicles(line.GetVehicles());
+           await InsertVehicles(line.GetVehicles());
         }
         public static async Task InsertVehicles(List<Line> lines)
         {
             foreach (var line in lines)
-                InsertVehicles(line);
+                await InsertVehicles(line);
+        }
+
+        public static async Task InsertHistory(History history)
+        {
+            var table = dataContext.GetTable<History>();
+            table.InsertOnSubmit(history);
+        }
+        public static async Task InsertHistory(Vehicle vehicle)
+        {
+            await InsertHistory(TypeConverter.VehicleToHistory(vehicle));
+        }
+
+        public static async Task InsertHistorys(List<History> historys)
+        {
+            var table = dataContext.GetTable<History>();
+            table.InsertAllOnSubmit(historys);
+        }
+        public static async Task InsertHistorys(List<Vehicle> vehicles)
+        {
+            var list = new List<History>();
+
+            foreach (var vehicle in vehicles)
+                list.Add(TypeConverter.VehicleToHistory(vehicle));
+
+            await InsertHistorys(list);
         }
 
         public static async Task<List<Line>> GetIds(List<Line> lines)
@@ -87,7 +112,7 @@ namespace VVS.API
 
             if (!LinesCount.HasValue)
                 LinesCount = table.Count();
-            
+
             if (LinesCount.Value == 0)
                 return null;
 
@@ -95,6 +120,14 @@ namespace VVS.API
             var rec = table.First(v => v.name == line.Name
                                     && v.vehicle_type == type
                                     && v.citycode == line.CityCode);
+
+            return rec.Id;
+        }
+        public static int? GetId(Vehicle vehicle)
+        {
+            var table = dataContext.GetTable<Vehicles>();
+
+            var rec = table.First(v => v.db_id == vehicle.ID);
 
             return rec.Id;
         }
@@ -157,7 +190,7 @@ namespace VVS.API
             var table = dataContext.GetTable<Lines>();
 
             var rec = table.First(l => l.Id == id);
-                        
+
             return TypeConverter.LinesToLine(rec);
         }
         public static Line GetLine(string name, string citycode, VehicleType type)
