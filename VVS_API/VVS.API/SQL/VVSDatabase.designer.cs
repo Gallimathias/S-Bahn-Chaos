@@ -42,7 +42,7 @@ namespace VVS.API.SQL
     #endregion
 		
 		public VVSDatabaseDataContext() : 
-				base(global::VVS.API.Properties.Settings.Default.VVSBaseConnectionString, mappingSource)
+				base(global::VVS.API.Properties.Settings.Default.VVSBaseConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -660,7 +660,7 @@ namespace VVS.API.SQL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_db_id", DbType="NChar(30) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_db_id", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
 		public string db_id
 		{
 			get

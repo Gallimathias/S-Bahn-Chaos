@@ -15,8 +15,7 @@ namespace VVS.API
     static class APIConnection
     {
         public static Dictionary<string, Line> Lines { get; set; }
-
-
+        
         public static void Initzialize()
         {
             Lines = new Dictionary<string, Line>();
@@ -84,6 +83,9 @@ namespace VVS.API
         {
             foreach (var item in Data)
             {
+                if (item.DirectionText == null)
+                    continue;
+
                 var line = item.ToLine();
                 line.CityCode = "stgt";
                 var key = line.GetKey();
@@ -92,9 +94,8 @@ namespace VVS.API
                 {
                     Lines.TryGetValue(key, out line);
 
-                    lock (Lines)
-                        Lines.Remove(key);
-
+                    if (line.Id == null)
+                        line.Id = DatabaseManager.GetId(line);
 
                     var vehicle = item.ToVehicle();
 
@@ -103,8 +104,7 @@ namespace VVS.API
                         Vehicle temp;
                         line.Vehicles.TryGetValue(vehicle.ID, out temp);
                         temp = vehicle;
-                        line.Vehicles.Remove(vehicle.ID);
-                        line.Vehicles.Add(vehicle.ID, temp);
+                        line.Vehicles[vehicle.ID] = temp;
                     }
                     else
                     {
@@ -118,7 +118,7 @@ namespace VVS.API
                     }
 
                     lock (Lines)
-                        Lines.Add(key, line);
+                        Lines[key] = line;
 
                 }
                 else
@@ -134,12 +134,7 @@ namespace VVS.API
             }
 
         }
-
-
+        
         public static string lineTextToName(string label) => label.Where(x => char.IsNumber(x)).ToString();
-
-
-
-
     }
 }

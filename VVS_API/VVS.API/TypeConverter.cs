@@ -73,6 +73,9 @@ namespace VVS.API
             vehicle.Timestamp = data.Timestamp;
             vehicle.TimestampBefore = data.TimestampBefore;
 
+            var array = data.LineText.Split(' ');
+            vehicle.Type = StringToType(array[0]);
+
             return vehicle;
         }
 
@@ -102,18 +105,7 @@ namespace VVS.API
             var entry = new Vehicles();
 
             entry.db_id = vehicle.ID;
-            entry.line = vehicle.Line_id;
-            //entry.line = vehicle.Line_id;
-            //entry.current_stop = vehicle.CurrentStop;
-            //entry.delay = vehicle.Delay;
-            //entry.direction = vehicle.DirectionText;
-            //entry.isAtStop = vehicle.IsAtStop;
-            //entry.journey = vehicle.JourneyIdentifier;
-            //entry.latitude = vehicle.Latitude;
-            //entry.longitude = vehicle.Longitude;
-            //entry.next_stop = vehicle.NextStop;
-            //entry.timestamp = vehicle.Timestamp;
-            //entry.timestamp_before = vehicle.TimestampBefore;
+            entry.line = vehicle.Line_id.Value;
             
             entry.vehicle_type = VehicleTypeToBinary(vehicle.Type);
 
@@ -161,6 +153,26 @@ namespace VVS.API
             history.timestamp_before = vehicle.TimestampBefore;
 
             return history;
+        }
+
+        public static Dictionary<string, Line> lineListToDictionary(List<Line> lines)
+        {
+            var tmp = new Dictionary<string, Line>();
+
+            foreach (var line in lines)
+                tmp.Add(line.GetKey(), line);
+
+            return tmp;
+        }
+
+        public static Dictionary<string, Vehicle> vehicleListToDictionary(List<Vehicle> vehicles)
+        {
+            var tmp = new Dictionary<string, Vehicle>();
+
+            foreach (var vehicle in vehicles)
+                tmp.Add(vehicle.ID, vehicle);
+
+            return tmp;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace VVS.API
         }
         public static async Task InsertVehicles(Line line)
         {
-           await InsertVehicles(line.GetVehicles());
+            await InsertVehicles(line.GetVehicles());
         }
         public static async Task InsertVehicles(List<Line> lines)
         {
@@ -117,11 +117,16 @@ namespace VVS.API
                 return null;
 
             var type = TypeConverter.VehicleTypeToBinary(line.VehicleType);
-            var rec = table.First(v => v.name == line.Name
-                                    && v.vehicle_type == type
-                                    && v.citycode == line.CityCode);
 
-            return rec.Id;
+            var rec = table.FirstOrDefault(v => v.name == line.Name
+                                                && v.vehicle_type == type
+                                                && v.citycode == line.CityCode);
+
+            if (rec != null)
+                return rec.Id;
+
+            return null;
+
         }
         public static int? GetId(Vehicle vehicle)
         {

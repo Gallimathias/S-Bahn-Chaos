@@ -17,20 +17,20 @@ namespace VVS.API
             DatabaseManager.Connect();
             APIConnection.Initzialize();
 
+            var lineList = DatabaseManager.GetLines().Result;
+
+            APIConnection.Lines = TypeConverter.lineListToDictionary(lineList);
+
+            foreach (var line in APIConnection.Lines)
+                line.Value.Vehicles = TypeConverter.vehicleListToDictionary(
+                    DatabaseManager.GetVehicles(line.Value.Id.Value).Result);
+
             backgroundThread = new Thread(async () =>
             {
                 while (true)
                 {
                     await APIConnection.ReciveData();
-
-                    foreach (var line in APIConnection.Lines)
-                    {
-                        var id = DatabaseManager.GetId(line.Value);
-
-                        lock (APIConnection.Lines)
-                            line.Value.Id = id;
-                    }
-
+                    
                     await DatabaseManager.Submit();
                 }
             });
@@ -39,7 +39,7 @@ namespace VVS.API
 
             backgroundThread.Start();
 
-            while (true) { };
+            while (true) { Thread.Sleep(1000); };
         }
     }
 }

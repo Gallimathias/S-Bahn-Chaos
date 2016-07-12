@@ -33,5 +33,16 @@ namespace VVS.API.Properties {
                 return ((string)(this["VVSBaseConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=HAL2015;Initial Catalog=VVSBase;Integrated Security=True;Encrypt=Fals" +
+            "e;TrustServerCertificate=True")]
+        public string VVSBaseConnectionString1 {
+            get {
+                return ((string)(this["VVSBaseConnectionString1"]));
+            }
+        }
     }
 }
