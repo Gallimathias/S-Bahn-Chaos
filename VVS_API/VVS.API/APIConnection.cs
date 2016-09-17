@@ -15,7 +15,7 @@ namespace VVS.API
     static class APIConnection
     {
         public static Dictionary<string, Line> Lines { get; set; }
-        
+
         public static void Initzialize()
         {
             Lines = new Dictionary<string, Line>();
@@ -76,7 +76,12 @@ namespace VVS.API
             RawToLine(await ReadLocData());
             Console.WriteLine("Finish");
             Console.WriteLine($"Count: {Lines.Count}");
-            
+        }
+
+        public static async Task GetMessages()
+        {
+            foreach (var line in Lines.Values.Where(l => l.Delay > 0))
+                await DatabaseManager.InsertHistorys(line.GetVehicles().Where(v => v.Delay > 0 && v.Database_Id.HasValue && v.DelayHasChanged).ToList());
         }
 
         public static void RawToLine(List<RawData> Data)
@@ -104,6 +109,7 @@ namespace VVS.API
                         Vehicle temp;
                         line.Vehicles.TryGetValue(vehicle.ID, out temp);
                         temp = vehicle;
+
                         line.Vehicles[vehicle.ID] = temp;
                     }
                     else
@@ -134,7 +140,7 @@ namespace VVS.API
             }
 
         }
-        
+
         public static string lineTextToName(string label) => label.Where(x => char.IsNumber(x)).ToString();
     }
 }

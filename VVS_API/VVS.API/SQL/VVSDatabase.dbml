@@ -2,7 +2,8 @@
   <Connection Mode="AppSettings" ConnectionString="Data Source=HAL2015;Initial Catalog=VVSBase;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="VVS.API.Properties.Settings" SettingsPropertyName="VVSBaseConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.History" Member="History">
     <Type Name="History">
-      <Column Name="vehicle" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Message_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="vehicle" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="timestamp" Type="System.DateTimeOffset" DbType="DateTimeOffset NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="timestamp_before" Type="System.DateTimeOffset" DbType="DateTimeOffset NOT NULL" CanBeNull="false" />
       <Column Name="isAtStop" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
@@ -16,15 +17,6 @@
       <Association Name="Vehicles_History" Member="Vehicles" ThisKey="vehicle" OtherKey="Id" Type="Vehicles" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Lines" Member="Lines">
-    <Type Name="Lines">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="vehicle_type" Type="System.Data.Linq.Binary" DbType="Binary(1) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="citycode" Type="System.String" DbType="NChar(4)" CanBeNull="true" />
-      <Association Name="Lines_Vehicles" Member="Vehicles" ThisKey="Id" OtherKey="line" Type="Vehicles" />
-    </Type>
-  </Table>
   <Table Name="dbo.Vehicles" Member="Vehicles">
     <Type Name="Vehicles">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -33,6 +25,15 @@
       <Column Name="vehicle_type" Type="System.Data.Linq.Binary" DbType="Binary(1) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Association Name="Vehicles_History" Member="History" ThisKey="Id" OtherKey="vehicle" Type="History" />
       <Association Name="Lines_Vehicles" Member="Lines" ThisKey="line" OtherKey="Id" Type="Lines" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Lines" Member="Lines">
+    <Type Name="Lines">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="vehicle_type" Type="System.Data.Linq.Binary" DbType="Binary(1) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="citycode" Type="System.String" DbType="NChar(4)" CanBeNull="true" />
+      <Association Name="Lines_Vehicles" Member="Vehicles" ThisKey="Id" OtherKey="line" Type="Vehicles" />
     </Type>
   </Table>
 </Database>

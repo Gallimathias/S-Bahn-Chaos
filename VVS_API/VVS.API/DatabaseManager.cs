@@ -132,7 +132,10 @@ namespace VVS.API
         {
             var table = dataContext.GetTable<Vehicles>();
 
-            var rec = table.First(v => v.db_id == vehicle.ID);
+            var rec = table.FirstOrDefault(v => v.db_id == vehicle.ID);
+
+            if (rec == null)
+                return null;
 
             return rec.Id;
         }

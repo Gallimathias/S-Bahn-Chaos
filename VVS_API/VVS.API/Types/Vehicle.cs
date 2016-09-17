@@ -7,7 +7,19 @@ namespace VVS.API.Types
         public int? Database_Id { get; set; }
         public int? Line_id { get; set; }
         public string CurrentStop { get; set; }
-        public int Delay { get; set; }
+        public int Delay
+        {
+            get { return delay; }
+            set
+            {
+                if (delay != value)
+                    DelayHasChanged = true;
+                else
+                    DelayHasChanged = false;
+
+                delay = value;
+            }
+        }
         public string DirectionText { get; set; }
         public string ID { get; set; }
         public bool IsAtStop { get; set; }
@@ -21,6 +33,8 @@ namespace VVS.API.Types
         public DateTimeOffset TimestampBefore { get; set; }
         public VehicleType Type { get; set; }
 
+        public bool DelayHasChanged { get; private set; }
 
+        private int delay;
     }
 }

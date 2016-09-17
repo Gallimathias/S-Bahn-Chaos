@@ -151,7 +151,8 @@ namespace VVS.API
             history.next_stop = vehicle.NextStop;
             history.timestamp = vehicle.Timestamp;
             history.timestamp_before = vehicle.TimestampBefore;
-
+            history.vehicle = vehicle.Database_Id.Value;
+            
             return history;
         }
 
