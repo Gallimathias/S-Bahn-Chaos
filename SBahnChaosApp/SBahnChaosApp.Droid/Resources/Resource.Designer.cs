@@ -28,7 +28,6 @@ namespace SBahnChaosApp.Droid
 		{
 			global::PCLStorage.Resource.String.ApplicationName = global::SBahnChaosApp.Droid.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::SBahnChaosApp.Droid.Resource.String.Hello;
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::SBahnChaosApp.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Attribute
