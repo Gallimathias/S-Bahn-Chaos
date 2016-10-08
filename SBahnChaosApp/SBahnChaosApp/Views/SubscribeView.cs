@@ -32,7 +32,7 @@ namespace SBahnChaosApp.Views
 
             setupPage();
             subscribe();
-            getListofAvailableLines();
+            //getListofAvailableLines();
 
             Content = new StackLayout
             {

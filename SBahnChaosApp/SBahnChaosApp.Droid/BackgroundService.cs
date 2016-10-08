@@ -7,6 +7,9 @@ using System;
 using System.Threading;
 using Android.OS;
 using System.Net;
+using Firebase.Iid;
+using Firebase;
+using Firebase.Messaging;
 
 namespace SBahnChaosApp.Droid
 {
@@ -25,7 +28,7 @@ namespace SBahnChaosApp.Droid
 
         public override void OnDestroy()
         {
-            
+
             base.OnDestroy();
         }
 
@@ -39,6 +42,8 @@ namespace SBahnChaosApp.Droid
 
             DoWork();
 
+            base.OnStartCommand(intent, flags, startId);
+
 
             return StartCommandResult.Sticky;
         }
@@ -48,7 +53,7 @@ namespace SBahnChaosApp.Droid
             Intent intent = new Intent(this, typeof(MainActivity));
 
             PendingIntent pendingIntent = PendingIntent.GetActivity(this, 1, intent, 0);
-            
+
             Notification.Builder builder = new Notification.Builder(this);
 
             builder.SetAutoCancel(false);
@@ -59,8 +64,8 @@ namespace SBahnChaosApp.Droid
             builder.SetContentIntent(pendingIntent);
             builder.SetOngoing(true);
             builder.SetSubText("This is subtext...");   //API level 16
-            builder.SetNumber(100);
-            
+            //builder.SetNumber(100);
+
             StartForeground((int)NotificationFlags.ForegroundService, builder.Build());
         }
 
@@ -68,21 +73,34 @@ namespace SBahnChaosApp.Droid
         {
             Toast.MakeText(this, "the Service started", ToastLength.Long).Show();
 
+            //var t = new Thread(() =>
+            //{
+
+            //    while (true)
+            //    {
+            //        Thread.Sleep(10000);
+            //        string a = DateTime.Now.ToString("HH:mm");
+            //        sendNotification(a);
+            //        var manager = (ActivityManager)GetSystemService(ActivityService);
+            //        var list = manager.GetRunningServices(int.MaxValue);
+
+            //    }
+            //});
+
+            //t.Start();
+
+            //IsRunning = t.IsAlive;
+
             var t = new Thread(() =>
             {
-                
-                while (true)
-                {
-                    Thread.Sleep(10000);
-                    //string a = DateTime.Now.ToString("HH:mm");
-                    //sendNotification(a);
-                    var manager = (ActivityManager)GetSystemService(ActivityService);
-                    var list = manager.GetRunningServices(int.MaxValue);
-                   
-                }
-            });
+                var instance = FirebaseInstanceId.Instance;
 
+                instance.DeleteInstanceId();
+                instance.GetToken("181042758685", FirebaseMessaging.InstanceIdScope);
+                Log.Debug("BackgroundService", "Token: " + instance.Token);
+            });
             t.Start();
+
         }
 
         void sendNotification(string message)
@@ -112,6 +130,6 @@ namespace SBahnChaosApp.Droid
             binder = new BackgroundServiceBinder(this);
             return binder;
         }
-        
+
     }
 }

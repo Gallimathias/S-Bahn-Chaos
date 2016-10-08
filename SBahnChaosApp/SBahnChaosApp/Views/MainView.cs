@@ -41,7 +41,7 @@ namespace SBahnChaosApp.Views
         
         private void setupMainView()
         {
-            this.Detail = new ContentPage
+            Detail = new ContentPage
             {
                 Content = new StackLayout
                 {
@@ -54,7 +54,7 @@ namespace SBahnChaosApp.Views
 
             ContentPage contenPage = new ContentPage { Title = "AppName", Content = new StackLayout { Children = { } } };
             contenPage.Icon = "ic_menu_white_48dp.png";
-            this.Master = contenPage;
+            Master = contenPage;
         }
 
         private void initializedViews()
