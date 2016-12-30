@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Firebase;
+using Firebase.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,7 @@ namespace VVS.API
         static Thread backgroundThread;
         static void Main(string[] args)
         {
+            test();
             DatabaseManager.Connect();
             APIConnection.Initzialize();
 
@@ -40,6 +43,24 @@ namespace VVS.API
             backgroundThread.Start();
 
             while (true) { Thread.Sleep(1000); };
+        }
+
+        private static void test()
+        {
+            var m = new Message();
+
+            m.To = "de.sbahnchaosapp.android";
+            //m.Priority = new[] { "high" };
+            m.Notification = new AndroidNotification() {
+                Body = "this is a server message",
+                Title = "From: Server <3"
+            };
+
+            m.Time_to_live = 60;
+
+            var a = FirebaseAPI.SendRequest(m);
+
+            Console.ReadKey();
         }
 
         static void getLinesFromDB()
